@@ -7,7 +7,7 @@ import net.dv8tion.jda.api.events.session.ReadyEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
-public class Listener extends ListenerAdapter {
+public class MessageListener extends ListenerAdapter {
     private final CommandManager commandManager = new CommandManager();
 
     @Override
