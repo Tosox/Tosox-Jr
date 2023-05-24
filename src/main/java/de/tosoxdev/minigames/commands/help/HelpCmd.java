@@ -13,7 +13,7 @@ public class HelpCmd implements ICommand {
 
         String arg0;
         try {
-            arg0 = commandContext.getArgs().get(0);
+            arg0 = commandContext.args().get(0);
         } catch (IndexOutOfBoundsException e) {
             commandContext.getChannel().sendMessage("Please use the correct syntax: $help <cmd>!").queue();
             return;
