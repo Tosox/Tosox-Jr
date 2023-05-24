@@ -1,5 +1,6 @@
 package de.tosoxdev.minigames.commands;
 
+import de.tosoxdev.minigames.commands.help.HelpCmd;
 import de.tosoxdev.minigames.commands.ping.PingCmd;
 import de.tosoxdev.minigames.commands.say.SayCmd;
 import de.tosoxdev.minigames.utils.Constants;
@@ -11,11 +12,14 @@ import java.util.Arrays;
 import java.util.List;
 
 public class CommandManager {
+    private static CommandManager instance;
     private final List<ICommand> commands = new ArrayList<>();
 
     public CommandManager() {
+        instance = this;
         addCommand(new PingCmd());
         addCommand(new SayCmd());
+        addCommand(new HelpCmd());
     }
 
     private void addCommand(ICommand cmd) {
@@ -32,12 +36,10 @@ public class CommandManager {
 
     @Nullable
     public ICommand getCommand(String search) {
-        for (ICommand cmd : this.commands) {
-            if (cmd.getName().equals(search.toLowerCase())) {
-                return cmd;
-            }
-        }
-        return null;
+        return this.commands.stream()
+                .filter(cmd -> cmd.getName().equalsIgnoreCase(search))
+                .findFirst()
+                .orElse(null);
     }
 
     public void handle(MessageReceivedEvent event) {
@@ -55,5 +57,9 @@ public class CommandManager {
 
         List<String> args = Arrays.asList(split).subList(1, split.length);
         cmd.handle(new CommandContext(event, args));
+    }
+
+    public static CommandManager getInstance() {
+        return instance;
     }
 }
