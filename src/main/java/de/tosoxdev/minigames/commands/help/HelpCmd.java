@@ -3,6 +3,7 @@ package de.tosoxdev.minigames.commands.help;
 import de.tosoxdev.minigames.commands.CommandContext;
 import de.tosoxdev.minigames.commands.CommandManager;
 import de.tosoxdev.minigames.commands.ICommand;
+import de.tosoxdev.minigames.utils.Constants;
 import net.dv8tion.jda.api.JDA;
 
 public class HelpCmd implements ICommand {
@@ -14,7 +15,8 @@ public class HelpCmd implements ICommand {
         try {
             arg0 = commandContext.args().get(0);
         } catch (IndexOutOfBoundsException e) {
-            commandContext.getChannel().sendMessage("Please use the correct syntax: $help <cmd>").queue();
+            String msg = String.format("Please use the correct syntax: %s%s <cmd>", Constants.BOT_PREFIX, getName());
+            commandContext.getChannel().sendMessage(msg).queue();
             return;
         }
 
