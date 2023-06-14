@@ -8,20 +8,19 @@ import net.dv8tion.jda.api.JDA;
 public class HelpCmd implements ICommand {
     @Override
     public void handle(CommandContext commandContext) {
-        JDA jda = commandContext.getJDA();
         CommandManager cmdManager = CommandManager.getInstance();
 
         String arg0;
         try {
             arg0 = commandContext.args().get(0);
         } catch (IndexOutOfBoundsException e) {
-            commandContext.getChannel().sendMessage("Please use the correct syntax: $help <cmd>!").queue();
+            commandContext.getChannel().sendMessage("Please use the correct syntax: $help <cmd>").queue();
             return;
         }
 
         ICommand command = cmdManager.getCommand(arg0);
         if (command == null) {
-            commandContext.getChannel().sendMessage("This command doesn't exists!").queue();
+            commandContext.getChannel().sendMessage("Sorry, I can't provide you information about this command").queue();
             return;
         }
 
