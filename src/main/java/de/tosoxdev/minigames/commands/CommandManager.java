@@ -1,6 +1,7 @@
 package de.tosoxdev.minigames.commands;
 
 import de.tosoxdev.minigames.commands.help.HelpCmd;
+import de.tosoxdev.minigames.commands.list.ListCmd;
 import de.tosoxdev.minigames.commands.ping.PingCmd;
 import de.tosoxdev.minigames.commands.say.SayCmd;
 import de.tosoxdev.minigames.utils.Constants;
@@ -20,6 +21,7 @@ public class CommandManager {
         addCommand(new PingCmd());
         addCommand(new SayCmd());
         addCommand(new HelpCmd());
+        addCommand(new ListCmd());
     }
 
     public List<ICommand> getCommands() {
