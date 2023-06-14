@@ -22,6 +22,10 @@ public class CommandManager {
         addCommand(new HelpCmd());
     }
 
+    public List<ICommand> getCommands() {
+        return commands;
+    }
+
     private void addCommand(ICommand cmd) {
         boolean commandName = this.commands.stream().anyMatch(it -> it.getName().equalsIgnoreCase(cmd.getName()));
         if (commandName) {
@@ -47,7 +51,7 @@ public class CommandManager {
         event.getChannel().sendTyping().queue();
 
         if (cmd == null) {
-            event.getChannel().sendMessage("Hmmmm, seems like I don't know this command").queue();
+            event.getChannel().sendMessage("Seems like I don't know this command").queue();
             return;
         }
 
