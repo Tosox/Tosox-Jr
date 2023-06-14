@@ -20,7 +20,7 @@ public class HelpCmd implements ICommand {
 
         ICommand command = cmdManager.getCommand(arg0);
         if (command == null) {
-            commandContext.getChannel().sendMessage("Sorry, I can't provide you information about this command").queue();
+            commandContext.getChannel().sendMessage("Sorry, I can't find any information about this command").queue();
             return;
         }
 
