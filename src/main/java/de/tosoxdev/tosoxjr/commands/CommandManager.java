@@ -1,10 +1,11 @@
-package de.tosoxdev.minigames.commands;
+package de.tosoxdev.tosoxjr.commands;
 
-import de.tosoxdev.minigames.commands.help.HelpCmd;
-import de.tosoxdev.minigames.commands.list.ListCmd;
-import de.tosoxdev.minigames.commands.ping.PingCmd;
-import de.tosoxdev.minigames.commands.say.SayCmd;
-import de.tosoxdev.minigames.utils.Constants;
+import de.tosoxdev.tosoxjr.commands.help.HelpCmd;
+import de.tosoxdev.tosoxjr.commands.list.ListCmd;
+import de.tosoxdev.tosoxjr.commands.ping.PingCmd;
+import de.tosoxdev.tosoxjr.commands.quote.QuoteCmd;
+import de.tosoxdev.tosoxjr.commands.say.SayCmd;
+import de.tosoxdev.tosoxjr.utils.Constants;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.Nullable;
 
@@ -22,6 +23,7 @@ public class CommandManager {
         addCommand(new SayCmd());
         addCommand(new HelpCmd());
         addCommand(new ListCmd());
+        addCommand(new QuoteCmd());
     }
 
     public List<ICommand> getCommands() {
