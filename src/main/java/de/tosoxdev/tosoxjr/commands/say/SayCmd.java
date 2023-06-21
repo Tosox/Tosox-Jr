@@ -1,7 +1,7 @@
-package de.tosoxdev.minigames.commands.say;
+package de.tosoxdev.tosoxjr.commands.say;
 
-import de.tosoxdev.minigames.commands.ICommand;
-import de.tosoxdev.minigames.utils.Constants;
+import de.tosoxdev.tosoxjr.commands.ICommand;
+import de.tosoxdev.tosoxjr.utils.Constants;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.util.List;

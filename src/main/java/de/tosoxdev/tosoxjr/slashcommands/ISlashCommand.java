@@ -1,4 +1,4 @@
-package de.tosoxdev.minigames.slashcommands;
+package de.tosoxdev.tosoxjr.slashcommands;
 
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 

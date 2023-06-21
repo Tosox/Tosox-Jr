@@ -1,6 +1,6 @@
-package de.tosoxdev.minigames.slashcommands;
+package de.tosoxdev.tosoxjr.slashcommands;
 
-import de.tosoxdev.minigames.slashcommands.getbadge.GetBadgeCmd;
+import de.tosoxdev.tosoxjr.slashcommands.getbadge.GetBadgeCmd;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
 import java.util.ArrayList;

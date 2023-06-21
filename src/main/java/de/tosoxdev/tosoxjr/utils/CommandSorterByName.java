@@ -1,6 +1,6 @@
-package de.tosoxdev.minigames.utils;
+package de.tosoxdev.tosoxjr.utils;
 
-import de.tosoxdev.minigames.commands.ICommand;
+import de.tosoxdev.tosoxjr.commands.ICommand;
 
 import java.util.Comparator;
 

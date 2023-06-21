@@ -1,4 +1,4 @@
-package de.tosoxdev.minigames.commands;
+package de.tosoxdev.tosoxjr.commands;
 
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 

@@ -1,9 +1,9 @@
-package de.tosoxdev.minigames.commands.list;
+package de.tosoxdev.tosoxjr.commands.list;
 
-import de.tosoxdev.minigames.commands.CommandManager;
-import de.tosoxdev.minigames.commands.ICommand;
-import de.tosoxdev.minigames.utils.CommandSorterByName;
-import de.tosoxdev.minigames.utils.Constants;
+import de.tosoxdev.tosoxjr.commands.CommandManager;
+import de.tosoxdev.tosoxjr.commands.ICommand;
+import de.tosoxdev.tosoxjr.utils.CommandSorterByName;
+import de.tosoxdev.tosoxjr.utils.Constants;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.util.List;

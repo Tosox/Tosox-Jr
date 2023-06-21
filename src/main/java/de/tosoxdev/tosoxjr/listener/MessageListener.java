@@ -1,8 +1,8 @@
-package de.tosoxdev.minigames.listener;
+package de.tosoxdev.tosoxjr.listener;
 
-import de.tosoxdev.minigames.commands.CommandManager;
-import de.tosoxdev.minigames.slashcommands.SlashCommandManager;
-import de.tosoxdev.minigames.utils.Constants;
+import de.tosoxdev.tosoxjr.commands.CommandManager;
+import de.tosoxdev.tosoxjr.slashcommands.SlashCommandManager;
+import de.tosoxdev.tosoxjr.utils.Constants;
 import net.dv8tion.jda.api.events.guild.GuildReadyEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;

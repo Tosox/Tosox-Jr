@@ -1,6 +1,6 @@
-package de.tosoxdev.minigames.commands.ping;
+package de.tosoxdev.tosoxjr.commands.ping;
 
-import de.tosoxdev.minigames.commands.ICommand;
+import de.tosoxdev.tosoxjr.commands.ICommand;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.util.List;
