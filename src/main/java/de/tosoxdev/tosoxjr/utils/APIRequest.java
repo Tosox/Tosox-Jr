@@ -10,9 +10,9 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 public class APIRequest {
-    public static JSONObject get(String url) {
+    public static JSONObject get(String query) {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(url))
+                .uri(URI.create(query))
                 .method("GET", HttpRequest.BodyPublishers.noBody())
                 .build();
 
@@ -20,7 +20,7 @@ public class APIRequest {
         try {
             response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
         } catch (IOException | InterruptedException e) {
-            System.out.printf("[ERROR]: The response for request '%s' was invalid\n", url);
+            System.out.printf("[ERROR]: The response for request '%s' was invalid\n", query);
             return null;
         }
 
@@ -30,7 +30,7 @@ public class APIRequest {
         try {
             return new JSONObject(body);
         } catch (JSONException e) {
-            System.out.printf("[ERROR]: The json body for request '%s' is invalid\n", url);
+            System.out.printf("[ERROR]: The json body for request '%s' is invalid\n", query);
             return null;
         }
     }
