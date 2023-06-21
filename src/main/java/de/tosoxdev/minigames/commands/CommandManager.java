@@ -31,7 +31,7 @@ public class CommandManager {
     private void addCommand(ICommand cmd) {
         boolean commandName = this.commands.stream().anyMatch(it -> it.getName().equalsIgnoreCase(cmd.getName()));
         if (commandName) {
-            throw new IllegalArgumentException("Command is already in the list");
+            throw new IllegalArgumentException("Found duplicate in the command list");
         }
         commands.add(cmd);
     }
