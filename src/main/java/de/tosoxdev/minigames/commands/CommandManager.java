@@ -29,7 +29,7 @@ public class CommandManager {
     }
 
     private void addCommand(ICommand cmd) {
-        boolean commandName = this.commands.stream().anyMatch(it -> it.getName().equalsIgnoreCase(cmd.getName()));
+        boolean commandName = commands.stream().anyMatch(it -> it.getName().equalsIgnoreCase(cmd.getName()));
         if (commandName) {
             throw new IllegalArgumentException("Found duplicate in the command list");
         }
@@ -38,7 +38,7 @@ public class CommandManager {
 
     @Nullable
     public ICommand getCommand(String search) {
-        return this.commands.stream()
+        return commands.stream()
                 .filter(cmd -> cmd.getName().equalsIgnoreCase(search))
                 .findFirst()
                 .orElse(null);
@@ -48,7 +48,7 @@ public class CommandManager {
         // Remove prefix, split arguments
         String[] split = event.getMessage().getContentDisplay().substring(Constants.BOT_PREFIX.length()).split(" ");
         String command = split[0].toLowerCase();
-        ICommand cmd = this.getCommand(command);
+        ICommand cmd = getCommand(command);
 
         event.getChannel().sendTyping().queue();
 

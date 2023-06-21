@@ -26,7 +26,7 @@ public class SlashCommandManager {
     }
 
     public ISlashCommand getCommand(String search) {
-        return this.commands.stream()
+        return commands.stream()
                 .filter(cmd -> cmd.getName().equalsIgnoreCase(search))
                 .findFirst()
                 .orElse(null);
