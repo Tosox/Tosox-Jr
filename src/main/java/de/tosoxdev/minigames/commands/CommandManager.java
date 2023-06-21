@@ -58,7 +58,7 @@ public class CommandManager {
         }
 
         List<String> args = Arrays.asList(split).subList(1, split.length);
-        cmd.handle(new CommandContext(event, args));
+        cmd.handle(event, args);
     }
 
     public static CommandManager getInstance() {

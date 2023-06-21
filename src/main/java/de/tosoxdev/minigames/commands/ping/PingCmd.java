@@ -1,12 +1,14 @@
 package de.tosoxdev.minigames.commands.ping;
 
-import de.tosoxdev.minigames.commands.CommandContext;
 import de.tosoxdev.minigames.commands.ICommand;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+
+import java.util.List;
 
 public class PingCmd implements ICommand {
     @Override
-    public void handle(CommandContext commandContext) {
-        commandContext.event().getChannel().sendMessage("pong!").queue();
+    public void handle(MessageReceivedEvent event, List<String> args) {
+        event.getChannel().sendMessage("pong!").queue();
     }
 
     @Override
