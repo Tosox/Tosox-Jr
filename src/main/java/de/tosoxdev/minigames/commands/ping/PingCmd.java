@@ -6,7 +6,7 @@ import de.tosoxdev.minigames.commands.ICommand;
 public class PingCmd implements ICommand {
     @Override
     public void handle(CommandContext commandContext) {
-        commandContext.getChannel().sendMessage("pong!").queue();
+        commandContext.event().getChannel().sendMessage("pong!").queue();
     }
 
     @Override

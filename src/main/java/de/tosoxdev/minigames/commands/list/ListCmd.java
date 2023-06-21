@@ -23,7 +23,7 @@ public class ListCmd implements ICommand {
             sb.append(String.format("%s%s\n", Constants.BOT_PREFIX, cmd.getName()));
         }
 
-        commandContext.getChannel().sendMessage(sb.toString()).queue();
+        commandContext.event().getChannel().sendMessage(sb.toString()).queue();
     }
 
     @Override

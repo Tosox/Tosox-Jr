@@ -7,8 +7,8 @@ import de.tosoxdev.minigames.utils.Constants;
 public class SayCmd implements ICommand {
     @Override
     public void handle(CommandContext commandContext) {
-        String sayMsg = commandContext.getMessage().getContentDisplay().substring(Constants.BOT_PREFIX.length() + getName().length());
-        commandContext.getChannel().sendMessage(sayMsg).queue();
+        String sayMsg = commandContext.event().getMessage().getContentDisplay().substring(Constants.BOT_PREFIX.length() + getName().length());
+        commandContext.event().getChannel().sendMessage(sayMsg).queue();
     }
 
     @Override
