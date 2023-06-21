@@ -15,6 +15,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class MessageListener extends ListenerAdapter {
     private final CommandManager commandManager = new CommandManager();
@@ -43,10 +44,10 @@ public class MessageListener extends ListenerAdapter {
 
     @Override
     public void onGuildReady(@NotNull GuildReadyEvent event) {
-        List<CommandData> commandData = new ArrayList<>();
-        for (ISlashCommand cmd : slashCommandManager.getCommands()) {
-            commandData.add(Commands.slash(cmd.getName(), cmd.getHelp()));
-        }
+        List<CommandData> commandData = slashCommandManager.getCommands()
+                .stream()
+                .map(c -> Commands.slash(c.getName(), c.getDescription()))
+                .collect(Collectors.toList());
         event.getGuild().updateCommands().addCommands(commandData).queue();
     }
 }
