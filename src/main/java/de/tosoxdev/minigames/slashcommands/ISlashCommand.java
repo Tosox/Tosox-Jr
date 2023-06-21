@@ -1,7 +1,9 @@
 package de.tosoxdev.minigames.slashcommands;
 
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+
 public interface ISlashCommand {
-    void handle(SlashCommandContext slashCommandContext);
+    void handle(SlashCommandInteractionEvent event);
     String getName();
     String getDescription();
 }

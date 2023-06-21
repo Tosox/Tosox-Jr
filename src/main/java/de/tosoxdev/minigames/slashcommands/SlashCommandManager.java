@@ -35,6 +35,6 @@ public class SlashCommandManager {
     public void handle(SlashCommandInteractionEvent event) {
         String command = event.getName();
         ISlashCommand cmd = getCommand(command);
-        cmd.handle(new SlashCommandContext(event));
+        cmd.handle(event);
     }
 }
