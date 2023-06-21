@@ -1,6 +1,6 @@
 package de.tosoxdev.minigames.slashcommands;
 
-import de.tosoxdev.minigames.slashcommands.badge.GetBadgeCmd;
+import de.tosoxdev.minigames.slashcommands.getbadge.GetBadgeCmd;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ public class SlashCommandManager {
     private void addCommand(ISlashCommand cmd) {
         boolean commandName = commands.stream().anyMatch(it -> it.getName().equalsIgnoreCase(cmd.getName()));
         if (commandName) {
-            throw new IllegalArgumentException("Command is already in the list");
+            throw new IllegalArgumentException("Found duplicate in the application command list");
         }
         commands.add(cmd);
     }
