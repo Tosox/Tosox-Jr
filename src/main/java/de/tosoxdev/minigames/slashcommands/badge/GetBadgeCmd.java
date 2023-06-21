@@ -1,7 +1,7 @@
-package de.tosoxdev.minigames.slashCommands.badge;
+package de.tosoxdev.minigames.slashcommands.badge;
 
-import de.tosoxdev.minigames.slashCommands.ISlashCommand;
-import de.tosoxdev.minigames.slashCommands.SlashCommandContext;
+import de.tosoxdev.minigames.slashcommands.ISlashCommand;
+import de.tosoxdev.minigames.slashcommands.SlashCommandContext;
 
 public class GetBadgeCmd implements ISlashCommand {
     @Override

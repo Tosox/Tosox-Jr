@@ -1,4 +1,4 @@
-package de.tosoxdev.minigames.slashCommands;
+package de.tosoxdev.minigames.slashcommands;
 
 public interface ISlashCommand {
     void handle(SlashCommandContext slashCommandContext);
