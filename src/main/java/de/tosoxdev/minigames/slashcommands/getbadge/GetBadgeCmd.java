@@ -13,9 +13,9 @@ public class GetBadgeCmd implements ISlashCommand {
             return;
         }
 
-        String ownerTag = slashCommandContext.event().getGuild().getOwnerId();
-        String userTag = slashCommandContext.event().getUser().getId();
-        if (!userTag.equalsIgnoreCase(ownerTag)) {
+        String ownerId = slashCommandContext.event().getGuild().getOwnerId();
+        String userId = slashCommandContext.event().getUser().getId();
+        if (!userId.equalsIgnoreCase(ownerId)) {
             slashCommandContext.event().reply("You don't have the permission to run this command").queue();
             return;
         }
