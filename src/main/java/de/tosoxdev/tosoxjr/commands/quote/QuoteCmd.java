@@ -12,35 +12,37 @@ import java.util.concurrent.Callable;
 
 public class QuoteCmd implements ICommand {
     private final HashMap<String, Callable<String>> sources = new HashMap<>(Map.of(
-            "breaking-bad", Quotes::getBreakingBad,
-            "joke", Quotes::getJoke,
-            "famous", Quotes::getFamous,
-            "wisdom", Quotes::getWisdom,
-            "inspirational", Quotes::getInspirational
+            "breaking-bad", Quote::getBreakingBad,
+            "joke", Quote::getJoke,
+            "famous", Quote::getFamous,
+            "wisdom", Quote::getWisdom,
+            "inspirational", Quote::getInspirational
     ));
+    private final String quoteList;
+
+    public QuoteCmd() {
+        StringBuilder sb = new StringBuilder("Available sources:\n");
+        sources.forEach((key, value) -> sb.append(String.format("- %s\n", key)));
+        quoteList = sb.toString();
+    }
 
     @Override
     public void handle(MessageReceivedEvent event, List<String> args) {
         String source = ArgumentParser.get(args, 0);
         if (source == null) {
-            String msg = String.format("Please use the correct syntax: %squote <source>", Constants.BOT_PREFIX);
+            String msg = String.format("Syntax: %squote <source>\n%s", Constants.BOT_PREFIX, quoteList);
             event.getChannel().sendMessage(msg).queue();
-            return;
-        }
-
-        if (source.equalsIgnoreCase("list")) {
-            printList(event);
             return;
         }
 
         Callable<String> callable = sources.get(source);
         if (callable == null) {
-            String msg = String.format("There are no quotes for '%s'. Try '%squote list' to list all sources.", source, Constants.BOT_PREFIX);
+            String msg = String.format("There are no quotes for '%s'", source);
             event.getChannel().sendMessage(msg).queue();
             return;
         }
 
-        String quote = Quotes.getFromCallable(callable);
+        String quote = Quote.getFromCallable(callable);
         if (quote == null) {
             System.out.println("[ERROR]: The callable didn't return a value when trying to run 'quote'");
             return;
@@ -57,11 +59,5 @@ public class QuoteCmd implements ICommand {
     @Override
     public String getHelp() {
         return "Get a random quote";
-    }
-
-    private void printList(MessageReceivedEvent event) {
-        StringBuilder sb = new StringBuilder("Available sources:\n");
-        sources.forEach((key, value) -> sb.append(String.format("- %s\n", key)));
-        event.getChannel().sendMessage(sb).queue();
     }
 }

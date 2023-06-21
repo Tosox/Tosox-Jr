@@ -5,7 +5,7 @@ import org.json.JSONObject;
 
 import java.util.concurrent.Callable;
 
-public class Quotes {
+public class Quote {
     public static String getBreakingBad() {
         JSONObject response = APIRequest.get("https://api.breakingbadquotes.xyz/v1/quotes");
         if (response == null) {
