@@ -8,9 +8,12 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.json.JSONObject;
 
 import java.awt.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class CSStatsCmd implements ICommand {
+    private final SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
     private final CSStats csStats = new CSStats();
 
     @Override
@@ -86,20 +89,32 @@ public class CSStatsCmd implements ICommand {
         double nAccuracy = ((double) nHits / nFired) * 100;
         String accuracy = String.format("%.2f", nAccuracy);
 
-        String stats = "Kills: " + kills + "\n" +
-                "Deaths: " + deaths + "\n" +
-                "K/D: " + kd + "\n" +
-                "HS%: " + hspercentage + "%" + "\n" +
-                "Playtime: " + playtime + "h" + "\n" +
-                "MVPs: " + mvps + "\n" +
-                "Wins: " + wins + "\n" +
-                "WR: " + wr + "%" + "\n" +
-                "Accuracy: " + accuracy + "%" + "\n";
+        JSONObject profileData = csStats.getProfileInfos(userid);
+        if (profileData == null) {
+            String msg = String.format("Couldn't get Steam infos about %s", user);
+            event.getChannel().sendMessage(msg).queue();
+            return;
+        }
+
+        String profileUrl = csStats.getProfileInfo(profileData, "profileurl");
+        String username = csStats.getProfileInfo(profileData, "personaname");
+        String avatarUrl = csStats.getProfileInfo(profileData, "avatarfull");
+        String countryCode = csStats.getProfileInfo(profileData, "loccountrycode");
+        String flagUrl = String.format("https://flagsapi.com/%s/flat/32.png", countryCode);
 
         EmbedBuilder statsEmbed = new EmbedBuilder();
-        statsEmbed.setTitle(user, event.getGuild().getIconUrl());
-        statsEmbed.setColor(Color.BLUE);
-        statsEmbed.addField("Statistics", stats, false);
+        statsEmbed.setTitle(String.format("**CS:GO Stats for %s**", user), null);
+        statsEmbed.setColor(Color.ORANGE);
+        statsEmbed.setThumbnail(flagUrl);
+        statsEmbed.setAuthor(username, profileUrl, avatarUrl);
+        statsEmbed.setDescription("Playtime: " + playtime + "h");
+        statsEmbed.addField("**K/D**", kd, true);
+        statsEmbed.addField("**Headshot %**", hspercentage + "%", true);
+        statsEmbed.addField("**Accuracy**", accuracy + "%", true);
+        statsEmbed.addField("**MVPs**", mvps, true);
+        statsEmbed.addField("**Wins**", wins, true);
+        statsEmbed.addField("**Winrate**", wr + "%", true);
+        statsEmbed.setFooter("Request made @ " + formatter.format(new Date()), null);
 
         event.getChannel().sendMessageEmbeds(statsEmbed.build()).queue();
     }
