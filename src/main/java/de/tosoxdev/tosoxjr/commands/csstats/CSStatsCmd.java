@@ -31,11 +31,11 @@ public class CSStatsCmd implements ICommand {
 
         JSONObject userStats = csStats.getStatistics(userid);
         if (userStats == null) {
-            String msg = String.format("Couldn't find user: %s", userid);
+            String msg = String.format("Couldn't find user: %s", user);
             event.getChannel().sendMessage(msg).queue();
             return;
         } else if (userStats.isEmpty()) {
-            String msg = String.format("User '%s' has a private or friends only profile", userid);
+            String msg = String.format("User '%s' has a private or friends only profile", user);
             event.getChannel().sendMessage(msg).queue();
             return;
         }
