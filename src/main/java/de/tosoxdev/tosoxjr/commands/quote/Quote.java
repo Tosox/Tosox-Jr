@@ -7,7 +7,7 @@ import java.util.concurrent.Callable;
 
 public class Quote {
     public static String getBreakingBad() {
-        JSONObject response = APIRequest.get("https://api.breakingbadquotes.xyz/v1/quotes");
+        JSONObject response = APIRequest.getJson("https://api.breakingbadquotes.xyz/v1/quotes");
         if (response == null) {
             return null;
         }
@@ -18,7 +18,7 @@ public class Quote {
     }
 
     public static String getJoke() {
-        JSONObject response = APIRequest.get("https://official-joke-api.appspot.com/jokes/random");
+        JSONObject response = APIRequest.getJson("https://official-joke-api.appspot.com/jokes/random");
         if (response == null) {
             return null;
         }
@@ -29,7 +29,7 @@ public class Quote {
     }
 
     public static String getFamous() {
-        JSONObject response = APIRequest.get("https://api.quotable.io/quotes/random?tags=famous-quotes");
+        JSONObject response = APIRequest.getJson("https://api.quotable.io/quotes/random?tags=famous-quotes");
         if (response == null) {
             return null;
         }
@@ -40,7 +40,7 @@ public class Quote {
     }
 
     public static String getWisdom() {
-        JSONObject response = APIRequest.get("https://api.quotable.io/quotes/random?tags=wisdom");
+        JSONObject response = APIRequest.getJson("https://api.quotable.io/quotes/random?tags=wisdom");
         if (response == null) {
             return null;
         }
@@ -51,7 +51,7 @@ public class Quote {
     }
 
     public static String getInspirational() {
-        JSONObject response = APIRequest.get("https://zenquotes.io/api/random");
+        JSONObject response = APIRequest.getJson("https://zenquotes.io/api/random");
         if (response == null) {
             return null;
         }

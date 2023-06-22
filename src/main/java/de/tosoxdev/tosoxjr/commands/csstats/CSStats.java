@@ -23,7 +23,7 @@ public class CSStats {
         }
 
         String query = String.format("http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/?key=%s&vanityurl=%s", STEAM_API_KEY, userid);
-        JSONObject response = APIRequest.get(query);
+        JSONObject response = APIRequest.getJson(query);
         if ((response == null) || (response.isEmpty())) {
             return null;
         }
@@ -38,9 +38,9 @@ public class CSStats {
         return objResponse.getString("steamid");
     }
 
-    public JSONObject getStatistics(String userid) {
-        String query = String.format("http://api.steampowered.com/ISteamUserStats/GetUserStatsForGame/v2/?appid=%s&key=%s&steamid=%s", CSGO_APP_ID, STEAM_API_KEY, userid);
-        return APIRequest.get(query);
+    public JSONObject getStatistics(String userid64) {
+        String query = String.format("http://api.steampowered.com/ISteamUserStats/GetUserStatsForGame/v2/?appid=%s&key=%s&steamid=%s", CSGO_APP_ID, STEAM_API_KEY, userid64);
+        return APIRequest.getJson(query);
     }
 
     public String getStatistic(JSONObject statistics, String statistic) {
@@ -55,5 +55,30 @@ public class CSStats {
         }
 
         return null;
+    }
+
+    public JSONObject getProfileInfos(String userid64) {
+        String query = String.format("http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=%s&steamids=%s", STEAM_API_KEY, userid64);
+        JSONObject response = APIRequest.getJson(query);
+        if (response == null) {
+            return null;
+        }
+
+        JSONObject objResponse = response.getJSONObject("response");
+        JSONArray players = objResponse.optJSONArray("players");
+        if ((players == null) || players.isEmpty()) {
+            return null;
+        }
+
+        return (JSONObject) players.get(0);
+    }
+
+    public String getProfileInfo(JSONObject infos, String info) {
+        Object objInfo = infos.get(info);
+        if (objInfo == null) {
+            return null;
+        }
+
+        return String.valueOf(objInfo);
     }
 }

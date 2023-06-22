@@ -10,7 +10,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 public class APIRequest {
-    public static JSONObject get(String query) {
+    private static HttpResponse<String> get(String query) {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(query))
                 .method("GET", HttpRequest.BodyPublishers.noBody())
@@ -24,7 +24,20 @@ public class APIRequest {
             return null;
         }
 
+        return response;
+    }
+
+    public static JSONObject getJson(String query) {
+        HttpResponse<String> response = get(query);
+        if (response == null) {
+            return null;
+        }
+
         String body = response.body();
+        if (body == null) {
+            return null;
+        }
+
         body = body.replaceAll("^\\[(.+)]$", "$1"); // Remove outer brackets if existing
 
         try {
