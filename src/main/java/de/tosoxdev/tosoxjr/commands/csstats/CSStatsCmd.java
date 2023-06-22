@@ -38,7 +38,7 @@ public class CSStatsCmd implements ICommand {
             event.getChannel().sendMessage(msg).queue();
             return;
         } else if (userStats.isEmpty()) {
-            String msg = String.format("User '%s' has a private or friends only profile", user);
+            String msg = String.format("User '%s' set 'Game Details' to private or friends only", user);
             event.getChannel().sendMessage(msg).queue();
             return;
         }
@@ -89,13 +89,7 @@ public class CSStatsCmd implements ICommand {
         double nAccuracy = ((double) nHits / nFired) * 100;
         String accuracy = String.format("%.2f", nAccuracy);
 
-        JSONObject profileData = csStats.getProfileInfos(userid);
-        if (profileData == null) {
-            String msg = String.format("Couldn't get Steam infos about %s", user);
-            event.getChannel().sendMessage(msg).queue();
-            return;
-        }
-
+        JSONObject profileData = csStats.getProfileInfos(userid); // Shouldn't return null because profile visibility is linked with game details visibility
         String profileUrl = csStats.getProfileInfo(profileData, "profileurl");
         String username = csStats.getProfileInfo(profileData, "personaname");
         String avatarUrl = csStats.getProfileInfo(profileData, "avatarfull");
@@ -105,7 +99,7 @@ public class CSStatsCmd implements ICommand {
         EmbedBuilder statsEmbed = new EmbedBuilder();
         statsEmbed.setTitle(String.format("**CS:GO Stats for %s**", user), null);
         statsEmbed.setColor(Color.ORANGE);
-        statsEmbed.setThumbnail(flagUrl);
+        statsEmbed.setThumbnail(countryCode != null ? flagUrl : null);
         statsEmbed.setAuthor(username, profileUrl, avatarUrl);
         statsEmbed.setDescription("Playtime: " + playtime + "h");
         statsEmbed.addField("**K/D**", kd, true);

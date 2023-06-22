@@ -74,11 +74,7 @@ public class CSStats {
     }
 
     public String getProfileInfo(JSONObject infos, String info) {
-        Object objInfo = infos.get(info);
-        if (objInfo == null) {
-            return null;
-        }
-
-        return String.valueOf(objInfo);
+        boolean hasInfo = infos.has(info);
+        return hasInfo ? String.valueOf(infos.get(info)) : null;
     }
 }
