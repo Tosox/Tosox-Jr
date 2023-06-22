@@ -1,5 +1,6 @@
 # Custom
 .idea/
+out/
 
 target/
 !.mvn/wrapper/maven-wrapper.jar
