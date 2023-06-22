@@ -3,7 +3,6 @@ package de.tosoxdev.tosoxjr.listener;
 import de.tosoxdev.tosoxjr.commands.CommandManager;
 import de.tosoxdev.tosoxjr.slashcommands.SlashCommandManager;
 import de.tosoxdev.tosoxjr.utils.Constants;
-import net.dv8tion.jda.api.events.guild.GuildReadyEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.events.session.ReadyEvent;
@@ -22,6 +21,13 @@ public class MessageListener extends ListenerAdapter {
     @Override
     public void onReady(@NotNull ReadyEvent event) {
         System.out.println(Constants.BOT_NAME + " is ready");
+
+        // Global application commands
+        List<CommandData> commandData = slashCommandManager.getCommands()
+                .stream()
+                .map(c -> Commands.slash(c.getName(), c.getDescription()))
+                .collect(Collectors.toList());
+        event.getJDA().updateCommands().addCommands(commandData).queue();
     }
 
     @Override
@@ -38,14 +44,5 @@ public class MessageListener extends ListenerAdapter {
     @Override
     public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) {
         slashCommandManager.handle(event);
-    }
-
-    @Override
-    public void onGuildReady(@NotNull GuildReadyEvent event) {
-        List<CommandData> commandData = slashCommandManager.getCommands()
-                .stream()
-                .map(c -> Commands.slash(c.getName(), c.getDescription()))
-                .collect(Collectors.toList());
-        event.getGuild().updateCommands().addCommands(commandData).queue();
     }
 }
