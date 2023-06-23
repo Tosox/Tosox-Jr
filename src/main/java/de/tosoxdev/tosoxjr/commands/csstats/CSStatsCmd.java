@@ -107,7 +107,7 @@ public class CSStatsCmd implements ICommand {
 
     @Override
     public String getName() {
-        return "csstats";
+        return "cs-stats";
     }
 
     @Override
