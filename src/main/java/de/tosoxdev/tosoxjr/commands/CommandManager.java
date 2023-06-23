@@ -1,5 +1,6 @@
 package de.tosoxdev.tosoxjr.commands;
 
+import de.tosoxdev.tosoxjr.commands.cat.CatCmd;
 import de.tosoxdev.tosoxjr.commands.csstats.CSStatsCmd;
 import de.tosoxdev.tosoxjr.commands.help.HelpCmd;
 import de.tosoxdev.tosoxjr.commands.list.ListCmd;
@@ -26,6 +27,7 @@ public class CommandManager {
         addCommand(new ListCmd());
         addCommand(new QuoteCmd());
         addCommand(new CSStatsCmd());
+        addCommand(new CatCmd());
     }
 
     public List<ICommand> getCommands() {
