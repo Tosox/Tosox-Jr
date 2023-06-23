@@ -18,6 +18,7 @@ public class CSStatsCmd implements ICommand {
 
     @Override
     public void handle(MessageReceivedEvent event, List<String> args) {
+        // Check if user parameter is provided
         String user = ArgumentParser.get(args, 0);
         if (user == null) {
             String msg = String.format("Please use the correct syntax: %scsstats <userid/userurl> <optional: stat>", Constants.BOT_PREFIX);
@@ -25,6 +26,7 @@ public class CSStatsCmd implements ICommand {
             return;
         }
 
+        // Check and get steamid64
         String userid = csStats.getID64(user);
         if (userid == null) {
             String msg = String.format("Couldn't find user id from user url: %s", user);
@@ -32,6 +34,7 @@ public class CSStatsCmd implements ICommand {
             return;
         }
 
+        // Get user statistics
         JSONObject userStats = csStats.getStatistics(userid);
         if (userStats == null) {
             String msg = String.format("Couldn't find user: %s", user);
@@ -43,8 +46,10 @@ public class CSStatsCmd implements ICommand {
             return;
         }
 
+        // Check if a statistic parameter is provided
         String stat = ArgumentParser.get(args, 1);
         if (stat != null) {
+            // Check if statistic exists
             String statistic = csStats.getStatistic(userStats, stat);
             if (statistic == null) {
                 String msg = String.format("Couldn't find statistic: %s", stat);
@@ -56,39 +61,25 @@ public class CSStatsCmd implements ICommand {
             return;
         }
 
+        // Get CS:GO statistics
         String kills = csStats.getStatistic(userStats, "total_kills");
         String deaths = csStats.getStatistic(userStats, "total_deaths");
-
-        int nKills = Integer.parseInt(kills);
-        int mDeaths = Integer.parseInt(deaths);
-        double nKd = (double) nKills / mDeaths;
-        String kd = String.format("%.2f", nKd);
-
         String headshots = csStats.getStatistic(userStats, "total_kills_headshot");
-        int nHeadshots = Integer.parseInt(headshots);
-        double nHspersentage = ((double) nHeadshots / nKills) * 100;
-        String hspercentage = String.format("%.2f", nHspersentage);
-
         String playtimeSeconds = csStats.getStatistic(userStats, "total_time_played");
-        double nPlaytime = Double.parseDouble(playtimeSeconds) / 3600;
-        String playtime = String.format("%.2f", nPlaytime);
-
         String mvps = csStats.getStatistic(userStats, "total_mvps");
-
         String wins = csStats.getStatistic(userStats, "total_matches_won");
         String matches = csStats.getStatistic(userStats, "total_matches_played");
-        int nWins = Integer.parseInt(wins);
-        int nMatches = Integer.parseInt(matches);
-        double nWr = ((double) nWins / nMatches) * 100;
-        String wr = String.format("%.2f", nWr);
-
         String fired = csStats.getStatistic(userStats, "total_shots_fired");
         String hits = csStats.getStatistic(userStats, "total_shots_hit");
-        int nFired = Integer.parseInt(fired);
-        int nHits = Integer.parseInt(hits);
-        double nAccuracy = ((double) nHits / nFired) * 100;
-        String accuracy = String.format("%.2f", nAccuracy);
 
+        // Calculate custom statistics
+        String kd = String.format("%.2f", (double) Integer.parseInt(kills) / Integer.parseInt(deaths));
+        String hsPercentage = String.format("%.2f", ((double) Integer.parseInt(headshots) / Integer.parseInt(kills)) * 100);
+        String playtime = String.format("%.2f", Double.parseDouble(playtimeSeconds) / 3600);
+        String wr = String.format("%.2f", ((double) Integer.parseInt(wins) / Integer.parseInt(matches)) * 100);
+        String accuracy = String.format("%.2f", ((double) Integer.parseInt(hits) / Integer.parseInt(fired)) * 100);
+
+        // Get user profile information
         JSONObject profileData = csStats.getProfileInfos(userid); // Shouldn't return null because profile visibility is linked with game details visibility
         String profileUrl = csStats.getProfileInfo(profileData, "profileurl");
         String username = csStats.getProfileInfo(profileData, "personaname");
@@ -96,6 +87,7 @@ public class CSStatsCmd implements ICommand {
         String countryCode = csStats.getProfileInfo(profileData, "loccountrycode");
         String flagUrl = String.format("https://flagsapi.com/%s/flat/32.png", countryCode);
 
+        // Build embed
         EmbedBuilder statsEmbed = new EmbedBuilder();
         statsEmbed.setTitle(String.format("**CS:GO Stats for %s**", user), null);
         statsEmbed.setColor(Color.ORANGE);
@@ -103,7 +95,7 @@ public class CSStatsCmd implements ICommand {
         statsEmbed.setAuthor(username, profileUrl, avatarUrl);
         statsEmbed.setDescription("Playtime: " + playtime + "h");
         statsEmbed.addField("**K/D**", kd, true);
-        statsEmbed.addField("**Headshot %**", hspercentage + "%", true);
+        statsEmbed.addField("**Headshot %**", hsPercentage + "%", true);
         statsEmbed.addField("**Accuracy**", accuracy + "%", true);
         statsEmbed.addField("**MVPs**", mvps, true);
         statsEmbed.addField("**Wins**", wins, true);
