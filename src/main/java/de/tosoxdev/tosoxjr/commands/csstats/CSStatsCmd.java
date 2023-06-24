@@ -1,6 +1,6 @@
 package de.tosoxdev.tosoxjr.commands.csstats;
 
-import de.tosoxdev.tosoxjr.commands.ICommand;
+import de.tosoxdev.tosoxjr.commands.CommandBase;
 import de.tosoxdev.tosoxjr.utils.ArgumentParser;
 import de.tosoxdev.tosoxjr.utils.Constants;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -12,9 +12,14 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-public class CSStatsCmd implements ICommand {
+public class CSStatsCmd extends CommandBase {
+    private static final String API_FLAGS = "https://flagsapi.com/%s/flat/32.png";
     private final SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
     private final CSStats csStats = new CSStats();
+
+    public CSStatsCmd() {
+        super("cs-stats", "Get some CS:GO statistics about the given player");
+    }
 
     @Override
     public void handle(MessageReceivedEvent event, List<String> args) {
@@ -85,7 +90,7 @@ public class CSStatsCmd implements ICommand {
         String username = csStats.getProfileInfo(profileData, "personaname");
         String avatarUrl = csStats.getProfileInfo(profileData, "avatarfull");
         String countryCode = csStats.getProfileInfo(profileData, "loccountrycode");
-        String flagUrl = String.format("https://flagsapi.com/%s/flat/32.png", countryCode);
+        String flagUrl = String.format(API_FLAGS, countryCode);
 
         // Build embed
         EmbedBuilder statsEmbed = new EmbedBuilder();
@@ -103,15 +108,5 @@ public class CSStatsCmd implements ICommand {
         statsEmbed.setFooter("Request made @ " + formatter.format(new Date()), null);
 
         event.getChannel().sendMessageEmbeds(statsEmbed.build()).queue();
-    }
-
-    @Override
-    public String getName() {
-        return "cs-stats";
-    }
-
-    @Override
-    public String getHelp() {
-        return "Get some CS:GO statistics about the given player";
     }
 }

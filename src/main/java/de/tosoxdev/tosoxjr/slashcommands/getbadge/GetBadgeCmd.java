@@ -1,10 +1,14 @@
 package de.tosoxdev.tosoxjr.slashcommands.getbadge;
 
-import de.tosoxdev.tosoxjr.slashcommands.ISlashCommand;
+import de.tosoxdev.tosoxjr.slashcommands.SlashCommandBase;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
-public class GetBadgeCmd implements ISlashCommand {
+public class GetBadgeCmd extends SlashCommandBase {
+    public GetBadgeCmd() {
+        super("get-badge", "Needs to be run at least one time a month to keep the 'Active Developer' badge");
+    }
+
     @Override
     public void handle(SlashCommandInteractionEvent event) {
         Guild guild = event.getGuild();
@@ -16,20 +20,10 @@ public class GetBadgeCmd implements ISlashCommand {
         String ownerId = event.getGuild().getOwnerId();
         String userId = event.getUser().getId();
         if (!userId.equalsIgnoreCase(ownerId)) {
-            event.reply("You don't have the permission to run this command").queue();
+            event.reply("Don't tell me what to do").queue();
             return;
         }
 
-        event.reply("The command was successfully executed :)").queue();
-    }
-
-    @Override
-    public String getName() {
-        return "get-badge";
-    }
-
-    @Override
-    public String getDescription() {
-        return "Needs to be run at least one time a month to keep the 'Active Developer' badge";
+        event.reply("The command was executed successfully :)").queue();
     }
 }

@@ -17,7 +17,7 @@ import java.util.List;
 
 public class CommandManager {
     private static CommandManager instance;
-    private final List<ICommand> commands = new ArrayList<>();
+    private final List<CommandBase> commands = new ArrayList<>();
 
     public CommandManager() {
         instance = this;
@@ -30,11 +30,11 @@ public class CommandManager {
         addCommand(new CatCmd());
     }
 
-    public List<ICommand> getCommands() {
+    public List<CommandBase> getCommands() {
         return commands;
     }
 
-    private void addCommand(ICommand cmd) {
+    private void addCommand(CommandBase cmd) {
         boolean commandName = commands.stream().anyMatch(it -> it.getName().equalsIgnoreCase(cmd.getName()));
         if (commandName) {
             throw new IllegalArgumentException("Found duplicate in the command list");
@@ -43,7 +43,7 @@ public class CommandManager {
     }
 
     @Nullable
-    public ICommand getCommand(String search) {
+    public CommandBase getCommand(String search) {
         return commands.stream()
                 .filter(cmd -> cmd.getName().equalsIgnoreCase(search))
                 .findFirst()
@@ -54,7 +54,7 @@ public class CommandManager {
         // Remove prefix, split arguments
         String[] split = event.getMessage().getContentDisplay().substring(Constants.BOT_PREFIX.length()).split(" ");
         String command = split[0].toLowerCase();
-        ICommand cmd = getCommand(command);
+        CommandBase cmd = getCommand(command);
 
         event.getChannel().sendTyping().queue();
 

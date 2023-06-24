@@ -7,17 +7,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SlashCommandManager {
-    private final List<ISlashCommand> commands = new ArrayList<>();
+    private final List<SlashCommandBase> commands = new ArrayList<>();
 
     public SlashCommandManager() {
         addCommand(new GetBadgeCmd());
     }
 
-    public List<ISlashCommand> getCommands() {
+    public List<SlashCommandBase> getCommands() {
         return commands;
     }
 
-    private void addCommand(ISlashCommand cmd) {
+    private void addCommand(SlashCommandBase cmd) {
         boolean commandName = commands.stream().anyMatch(it -> it.getName().equalsIgnoreCase(cmd.getName()));
         if (commandName) {
             throw new IllegalArgumentException("Found duplicate in the application command list");
@@ -25,7 +25,7 @@ public class SlashCommandManager {
         commands.add(cmd);
     }
 
-    public ISlashCommand getCommand(String search) {
+    public SlashCommandBase getCommand(String search) {
         return commands.stream()
                 .filter(cmd -> cmd.getName().equalsIgnoreCase(search))
                 .findFirst()
@@ -34,7 +34,7 @@ public class SlashCommandManager {
 
     public void handle(SlashCommandInteractionEvent event) {
         String command = event.getName();
-        ISlashCommand cmd = getCommand(command);
+        SlashCommandBase cmd = getCommand(command);
         cmd.handle(event);
     }
 }

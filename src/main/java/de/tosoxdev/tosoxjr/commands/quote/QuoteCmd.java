@@ -1,6 +1,6 @@
 package de.tosoxdev.tosoxjr.commands.quote;
 
-import de.tosoxdev.tosoxjr.commands.ICommand;
+import de.tosoxdev.tosoxjr.commands.CommandBase;
 import de.tosoxdev.tosoxjr.utils.ArgumentParser;
 import de.tosoxdev.tosoxjr.utils.Constants;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
-public class QuoteCmd implements ICommand {
+public class QuoteCmd extends CommandBase {
     private final HashMap<String, Callable<String>> sources = new HashMap<>(Map.of(
             "breaking-bad", Quote::getBreakingBad,
             "joke", Quote::getJoke,
@@ -21,6 +21,8 @@ public class QuoteCmd implements ICommand {
     private final String quoteList;
 
     public QuoteCmd() {
+        super("quote", "Get a random quote");
+
         StringBuilder sb = new StringBuilder("Available sources:\n");
         sources.forEach((key, value) -> sb.append(String.format("- %s\n", key)));
         quoteList = sb.toString();
@@ -49,15 +51,5 @@ public class QuoteCmd implements ICommand {
         }
 
         event.getChannel().sendMessage(quote).queue();
-    }
-
-    @Override
-    public String getName() {
-        return "quote";
-    }
-
-    @Override
-    public String getHelp() {
-        return "Get a random quote";
     }
 }
