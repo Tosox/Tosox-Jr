@@ -1,5 +1,6 @@
 package de.tosoxdev.tosoxjr.utils;
 
+import de.tosoxdev.tosoxjr.Main;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -20,7 +21,7 @@ public class APIRequest {
         try {
             response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
         } catch (IOException | InterruptedException e) {
-            System.out.printf("[ERROR]: The response for request '%s' was invalid\n", query);
+            Main.LOGGER.error("The response for request '{}' was invalid", query);
             return null;
         }
 
@@ -43,7 +44,7 @@ public class APIRequest {
         try {
             return new JSONObject(body);
         } catch (JSONException e) {
-            System.out.printf("[ERROR]: The json body for request '%s' is invalid\n", query);
+            Main.LOGGER.error("The json body for request '{}' is malformed", query);
             return null;
         }
     }

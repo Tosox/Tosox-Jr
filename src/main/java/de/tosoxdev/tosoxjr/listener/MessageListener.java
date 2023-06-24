@@ -1,5 +1,6 @@
 package de.tosoxdev.tosoxjr.listener;
 
+import de.tosoxdev.tosoxjr.Main;
 import de.tosoxdev.tosoxjr.commands.CommandManager;
 import de.tosoxdev.tosoxjr.slashcommands.SlashCommandManager;
 import de.tosoxdev.tosoxjr.utils.Constants;
@@ -20,7 +21,7 @@ public class MessageListener extends ListenerAdapter {
 
     @Override
     public void onReady(@NotNull ReadyEvent event) {
-        System.out.println(Constants.BOT_NAME + " is ready");
+        Main.LOGGER.info(Constants.BOT_NAME + " is ready");
 
         // Global application commands
         List<CommandData> commandData = slashCommandManager.getCommands()

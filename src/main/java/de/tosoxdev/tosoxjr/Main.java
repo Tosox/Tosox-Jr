@@ -6,6 +6,8 @@ import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.requests.GatewayIntent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Main {
     // Share bot permissions:
@@ -14,6 +16,7 @@ public class Main {
     //     - applications.commands
     //   Permissions:
     //     - Send Messages
+    public static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
     public static void main(String[] args) throws InterruptedException {
         JDABuilder.createDefault(Constants.BOT_TOKEN)

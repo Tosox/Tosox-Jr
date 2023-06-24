@@ -1,5 +1,6 @@
 package de.tosoxdev.tosoxjr.commands.csstats;
 
+import de.tosoxdev.tosoxjr.Main;
 import de.tosoxdev.tosoxjr.utils.APIRequest;
 import de.tosoxdev.tosoxjr.utils.Constants;
 import org.json.JSONArray;
@@ -34,7 +35,7 @@ public class CSStats {
         JSONObject objResponse = response.getJSONObject("response");
         int success = objResponse.getInt("success");
         if (success != 1) {
-            System.out.printf("[ERROR]: Success was not '1' when trying to get statistics for %s\n", userid);
+            Main.LOGGER.error("'success' was not '1' when trying to get statistics for {}", userid);
             return null;
         }
 

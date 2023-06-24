@@ -1,5 +1,6 @@
 package de.tosoxdev.tosoxjr.commands.quote;
 
+import de.tosoxdev.tosoxjr.Main;
 import de.tosoxdev.tosoxjr.commands.CommandBase;
 import de.tosoxdev.tosoxjr.utils.ArgumentParser;
 import de.tosoxdev.tosoxjr.utils.Constants;
@@ -46,7 +47,7 @@ public class QuoteCmd extends CommandBase {
 
         String quote = Quote.getFromCallable(callable);
         if (quote == null) {
-            System.out.println("[ERROR]: The callable didn't return a value when trying to run 'quote'");
+            Main.LOGGER.error("The callable didn't return a value when trying to run 'quote'");
             return;
         }
 

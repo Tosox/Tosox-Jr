@@ -1,5 +1,6 @@
 package de.tosoxdev.tosoxjr.slashcommands.getbadge;
 
+import de.tosoxdev.tosoxjr.Main;
 import de.tosoxdev.tosoxjr.slashcommands.SlashCommandBase;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -13,14 +14,14 @@ public class GetBadgeCmd extends SlashCommandBase {
     public void handle(SlashCommandInteractionEvent event) {
         Guild guild = event.getGuild();
         if (guild == null) {
-            System.out.println("[ERROR]: The guild was null when trying to run 'get-badge'");
+            Main.LOGGER.error("There is no guild available");
             return;
         }
 
         String ownerId = event.getGuild().getOwnerId();
         String userId = event.getUser().getId();
         if (!userId.equalsIgnoreCase(ownerId)) {
-            event.reply("Don't tell me what to do").queue();
+            event.reply("Don't tell me what to do >:(").queue();
             return;
         }
 
