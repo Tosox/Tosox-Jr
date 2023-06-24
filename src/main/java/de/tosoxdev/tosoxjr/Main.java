@@ -8,6 +8,13 @@ import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 
 public class Main {
+    // Share bot permissions:
+    //   Scopes:
+    //     - bot
+    //     - applications.commands
+    //   Permissions:
+    //     - Send Messages
+
     public static void main(String[] args) throws InterruptedException {
         JDABuilder.createDefault(Constants.BOT_TOKEN)
                 .addEventListeners(new MessageListener())
