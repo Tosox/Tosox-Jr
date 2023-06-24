@@ -1,6 +1,6 @@
 package de.tosoxdev.tosoxjr.commands.list;
 
-import de.tosoxdev.tosoxjr.commands.CommandManager;
+import de.tosoxdev.tosoxjr.Main;
 import de.tosoxdev.tosoxjr.commands.CommandBase;
 import de.tosoxdev.tosoxjr.utils.CommandSorterByName;
 import de.tosoxdev.tosoxjr.utils.Constants;
@@ -17,9 +17,7 @@ public class ListCmd extends CommandBase {
 
     @Override
     public void handle(MessageReceivedEvent event, List<String> args) {
-        CommandManager cmdManager = CommandManager.getInstance();
-
-        List<CommandBase> commands = cmdManager.getCommands();
+        List<CommandBase> commands = Main.getCommandManager().getCommands();
         commands.sort(commandSorterByName);
 
         StringBuilder sb = new StringBuilder();

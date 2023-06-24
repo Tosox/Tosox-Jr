@@ -14,7 +14,7 @@ public class GetBadgeCmd extends SlashCommandBase {
     public void handle(SlashCommandInteractionEvent event) {
         Guild guild = event.getGuild();
         if (guild == null) {
-            Main.LOGGER.error("There is no guild available");
+            Main.getLogger().error("There is no guild available");
             return;
         }
 

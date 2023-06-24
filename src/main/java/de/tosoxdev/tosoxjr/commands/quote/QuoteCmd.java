@@ -47,7 +47,7 @@ public class QuoteCmd extends CommandBase {
 
         String quote = Quote.getFromCallable(callable);
         if (quote == null) {
-            Main.LOGGER.error("The callable didn't return a value when trying to run 'quote'");
+            Main.getLogger().error("The callable didn't return a value when trying to run 'quote'");
             return;
         }
 

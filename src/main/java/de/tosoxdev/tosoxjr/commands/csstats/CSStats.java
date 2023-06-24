@@ -35,7 +35,7 @@ public class CSStats {
         JSONObject objResponse = response.getJSONObject("response");
         int success = objResponse.getInt("success");
         if (success != 1) {
-            Main.LOGGER.error("'success' was not '1' when trying to get statistics for {}", userid);
+            Main.getLogger().error("'success' was not '1' when trying to get statistics for {}", userid);
             return null;
         }
 

@@ -16,11 +16,9 @@ import java.util.Arrays;
 import java.util.List;
 
 public class CommandManager {
-    private static CommandManager instance;
     private final List<CommandBase> commands = new ArrayList<>();
 
     public CommandManager() {
-        instance = this;
         addCommand(new PingCmd());
         addCommand(new SayCmd());
         addCommand(new HelpCmd());
@@ -65,9 +63,5 @@ public class CommandManager {
 
         List<String> args = Arrays.asList(split).subList(1, split.length);
         cmd.handle(event, args);
-    }
-
-    public static CommandManager getInstance() {
-        return instance;
     }
 }

@@ -1,6 +1,6 @@
 package de.tosoxdev.tosoxjr.commands.help;
 
-import de.tosoxdev.tosoxjr.commands.CommandManager;
+import de.tosoxdev.tosoxjr.Main;
 import de.tosoxdev.tosoxjr.commands.CommandBase;
 import de.tosoxdev.tosoxjr.utils.ArgumentParser;
 import de.tosoxdev.tosoxjr.utils.Constants;
@@ -15,8 +15,6 @@ public class HelpCmd extends CommandBase {
 
     @Override
     public void handle(MessageReceivedEvent event, List<String> args) {
-        CommandManager cmdManager = CommandManager.getInstance();
-
         String cmdInfo = ArgumentParser.get(args, 0);
         if (cmdInfo == null) {
             String msg = String.format("Please use the correct syntax: %shelp <cmd>", Constants.BOT_PREFIX);
@@ -24,7 +22,7 @@ public class HelpCmd extends CommandBase {
             return;
         }
 
-        CommandBase command = cmdManager.getCommand(cmdInfo);
+        CommandBase command = Main.getCommandManager().getCommand(cmdInfo);
         if (command == null) {
             event.getChannel().sendMessage("Sorry, I can't find any information about this command").queue();
             return;

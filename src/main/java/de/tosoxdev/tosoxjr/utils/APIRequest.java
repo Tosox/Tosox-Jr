@@ -21,7 +21,7 @@ public class APIRequest {
         try {
             response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
         } catch (IOException | InterruptedException e) {
-            Main.LOGGER.error("The response for request '{}' was invalid", query);
+            Main.getLogger().error("The response for request '{}' was invalid", query);
             return null;
         }
 
@@ -53,7 +53,7 @@ public class APIRequest {
         try {
             return new JSONObject(body);
         } catch (JSONException e) {
-            Main.LOGGER.error("The json body for request '{}' is malformed", query);
+            Main.getLogger().error("The json body for request '{}' is malformed", query);
             return null;
         }
     }
