@@ -20,10 +20,11 @@ public class ListCmd extends CommandBase {
         List<CommandBase> commands = Main.getCommandManager().getCommands();
         commands.sort(commandSorterByName);
 
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder("Available Commands:\n```\n");
         for (CommandBase cmd : commands) {
             sb.append(String.format("%s%s\n", Constants.BOT_PREFIX, cmd.getName()));
         }
+        sb.append("```");
 
         event.getChannel().sendMessage(sb.toString()).queue();
     }
