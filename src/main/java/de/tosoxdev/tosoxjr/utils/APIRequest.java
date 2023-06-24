@@ -28,6 +28,15 @@ public class APIRequest {
         return response;
     }
 
+    public static String getString(String query) {
+        HttpResponse<String> response = get(query);
+        if (response == null) {
+            return null;
+        }
+
+        return response.body();
+    }
+
     public static JSONObject getJson(String query) {
         HttpResponse<String> response = get(query);
         if (response == null) {
