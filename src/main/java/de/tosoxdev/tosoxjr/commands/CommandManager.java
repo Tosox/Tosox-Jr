@@ -2,6 +2,7 @@ package de.tosoxdev.tosoxjr.commands;
 
 import de.tosoxdev.tosoxjr.commands.cat.CatCmd;
 import de.tosoxdev.tosoxjr.commands.csstats.CSStatsCmd;
+import de.tosoxdev.tosoxjr.commands.hangman.HangmanCmd;
 import de.tosoxdev.tosoxjr.commands.help.HelpCmd;
 import de.tosoxdev.tosoxjr.commands.list.ListCmd;
 import de.tosoxdev.tosoxjr.commands.ping.PingCmd;
@@ -18,6 +19,8 @@ import java.util.List;
 public class CommandManager {
     private final List<CommandBase> commands = new ArrayList<>();
 
+
+
     public CommandManager() {
         addCommand(new PingCmd());
         addCommand(new SayCmd());
@@ -26,6 +29,7 @@ public class CommandManager {
         addCommand(new QuoteCmd());
         addCommand(new CSStatsCmd());
         addCommand(new CatCmd());
+        addCommand(new HangmanCmd());
     }
 
     public List<CommandBase> getCommands() {
