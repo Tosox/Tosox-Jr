@@ -2,7 +2,6 @@ package de.tosoxdev.tosoxjr.listener;
 
 import de.tosoxdev.tosoxjr.Main;
 import de.tosoxdev.tosoxjr.commands.hangman.Hangman;
-import de.tosoxdev.tosoxjr.commands.hangman.HangmanCmd;
 import de.tosoxdev.tosoxjr.utils.Constants;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;

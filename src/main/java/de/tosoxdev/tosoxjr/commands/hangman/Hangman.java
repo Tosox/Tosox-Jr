@@ -2,15 +2,13 @@ package de.tosoxdev.tosoxjr.commands.hangman;
 
 import de.tosoxdev.tosoxjr.utils.APIRequest;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 
-import java.rmi.Remote;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Hangman {
     private static Hangman instance;
