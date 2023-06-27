@@ -20,5 +20,14 @@ jobs:
       - name: Build with Maven
         run: mvn -B package --file pom.xml
 
-      - name: Build the Docker image
-        run: docker build . --file Dockerfile --tag test-name:$(date +%s)
+      - name: Login to the Container registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ github.repository }}:latest
