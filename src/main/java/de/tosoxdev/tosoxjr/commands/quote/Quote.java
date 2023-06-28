@@ -1,24 +1,25 @@
 package de.tosoxdev.tosoxjr.commands.quote;
 
 import de.tosoxdev.tosoxjr.utils.APIRequest;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.concurrent.Callable;
 
 public class Quote {
     public static String getBreakingBad() {
-        JSONObject response = APIRequest.getJson("https://api.breakingbadquotes.xyz/v1/quotes");
-        if (response == null) {
+        JSONArray response = (JSONArray) APIRequest.getJson("https://api.breakingbadquotes.xyz/v1/quotes");
+        if ((response == null) || (response.isEmpty())) {
             return null;
         }
 
-        String quote = response.getString("quote");
-        String author = response.getString("author");
+        String quote = response.getJSONObject(0).getString("quote");
+        String author = response.getJSONObject(0).getString("author");
         return String.format("_%s_\n~ %s", quote, author);
     }
 
     public static String getJoke() {
-        JSONObject response = APIRequest.getJson("https://official-joke-api.appspot.com/jokes/random");
+        JSONObject response = (JSONObject) APIRequest.getJson("https://official-joke-api.appspot.com/jokes/random");
         if (response == null) {
             return null;
         }
@@ -29,35 +30,35 @@ public class Quote {
     }
 
     public static String getFamous() {
-        JSONObject response = APIRequest.getJson("https://api.quotable.io/quotes/random?tags=famous-quotes");
-        if (response == null) {
+        JSONArray response = (JSONArray) APIRequest.getJson("https://api.quotable.io/quotes/random?tags=famous-quotes");
+        if ((response == null) || (response.isEmpty())) {
             return null;
         }
 
-        String content = response.getString("content");
-        String author = response.getString("author");
+        String content = response.getJSONObject(0).getString("content");
+        String author = response.getJSONObject(0).getString("author");
         return String.format("_%s_\n~ %s", content, author);
     }
 
     public static String getWisdom() {
-        JSONObject response = APIRequest.getJson("https://api.quotable.io/quotes/random?tags=wisdom");
-        if (response == null) {
+        JSONArray response = (JSONArray) APIRequest.getJson("https://api.quotable.io/quotes/random?tags=wisdom");
+        if ((response == null) || (response.isEmpty())) {
             return null;
         }
 
-        String content = response.getString("content");
-        String author = response.getString("author");
+        String content = response.getJSONObject(0).getString("content");
+        String author = response.getJSONObject(0).getString("author");
         return String.format("_%s_\n~ %s", content, author);
     }
 
     public static String getInspirational() {
-        JSONObject response = APIRequest.getJson("https://zenquotes.io/api/random");
-        if (response == null) {
+        JSONArray response = (JSONArray) APIRequest.getJson("https://zenquotes.io/api/random");
+        if ((response == null) || (response.isEmpty())) {
             return null;
         }
 
-        String q = response.getString("q");
-        String a = response.getString("a");
+        String q = response.getJSONObject(0).getString("q");
+        String a = response.getJSONObject(0).getString("a");
         return String.format("_%s_\n~ %s", q, a);
     }
 

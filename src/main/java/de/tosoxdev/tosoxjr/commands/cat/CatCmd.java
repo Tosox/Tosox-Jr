@@ -3,7 +3,7 @@ package de.tosoxdev.tosoxjr.commands.cat;
 import de.tosoxdev.tosoxjr.commands.CommandBase;
 import de.tosoxdev.tosoxjr.utils.APIRequest;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import org.json.JSONObject;
+import org.json.JSONArray;
 
 import java.util.List;
 
@@ -16,13 +16,13 @@ public class CatCmd extends CommandBase {
 
     @Override
     public void handle(MessageReceivedEvent event, List<String> args) {
-        JSONObject response = APIRequest.getJson(CAT_API);
-        if (response == null) {
+        JSONArray response = (JSONArray) APIRequest.getJson(CAT_API);
+        if ((response == null) || (response.isEmpty())) {
             event.getChannel().sendMessage("Unable to get a cat image :(").queue();
             return;
         }
 
-        String url = response.getString("url");
+        String url = response.getJSONObject(0).getString("url");
         event.getChannel().sendMessage(url).queue();
     }
 }

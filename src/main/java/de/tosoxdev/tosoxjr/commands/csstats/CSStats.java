@@ -27,7 +27,7 @@ public class CSStats {
         }
 
         String query = String.format(API_VANITY_URL, Constants.STEAM_API_KEY, userid);
-        JSONObject response = APIRequest.getJson(query);
+        JSONObject response = (JSONObject) APIRequest.getJson(query);
         if ((response == null) || (response.isEmpty())) {
             return null;
         }
@@ -44,7 +44,7 @@ public class CSStats {
 
     public JSONObject getStatistics(String userid64) {
         String query = String.format(API_GAME_STATS, CSGO_APP_ID, Constants.STEAM_API_KEY, userid64);
-        return APIRequest.getJson(query);
+        return (JSONObject) APIRequest.getJson(query);
     }
 
     public String getStatistic(JSONObject statistics, String statistic) {
@@ -63,7 +63,7 @@ public class CSStats {
 
     public JSONObject getProfileInfos(String userid64) {
         String query = String.format(API_USER_PROFILE, Constants.STEAM_API_KEY, userid64);
-        JSONObject response = APIRequest.getJson(query);
+        JSONObject response = (JSONObject) APIRequest.getJson(query);
         if (response == null) {
             return null;
         }

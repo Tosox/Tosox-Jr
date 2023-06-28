@@ -1,6 +1,7 @@
 package de.tosoxdev.tosoxjr.utils;
 
 import de.tosoxdev.tosoxjr.Main;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -37,7 +38,7 @@ public class APIRequest {
         return response.body();
     }
 
-    public static JSONObject getJson(String query) {
+    public static Object getJson(String query) {
         HttpResponse<String> response = get(query);
         if (response == null) {
             return null;
@@ -48,13 +49,15 @@ public class APIRequest {
             return null;
         }
 
-        body = body.replaceAll("^\\[(.+)]$", "$1"); // Remove outer brackets if existing
-
         try {
             return new JSONObject(body);
         } catch (JSONException e) {
-            Main.getLogger().error("The json body for request '{}' is malformed", query);
-            return null;
+            try {
+                return new JSONArray(body);
+            } catch (JSONException f) {
+                Main.getLogger().error("The json body for request '{}' is malformed", query);
+                return null;
+            }
         }
     }
 }
