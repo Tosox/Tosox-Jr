@@ -50,6 +50,8 @@ public class Hangman extends GameBase {
     }
 
     private void handleMessageReceivedEvent(MessageReceivedEvent event) {
+        // TODO: Register games
+
         if (player != null) {
             event.getChannel().sendMessage("An instance of 'Hangman' is already running").queue();
             return;
