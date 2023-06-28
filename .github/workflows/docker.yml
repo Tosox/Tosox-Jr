@@ -1,11 +1,13 @@
+name: Docker CI
+
 on:
-  create:
-    tags:
-      - v*
+  release:
+    types:
+      - published
 
 jobs:
   maven-build:
-    uses: ./.github/workflows/maven.yml
+    uses: ./.github/workflows/maven.yml@master
   docker-build-publish:
     runs-on: ubuntu-latest
     needs:
@@ -15,8 +17,8 @@ jobs:
       - name: Download Artifact
         uses: actions/download-artifact@v3
         with:
-          name: tosox-jr
-          path: target/tosox-jr.jar
+          name: build-artifacts
+          path: target/
       - name: Login to the container registry
         uses: docker/login-action@v2
         with:
@@ -29,4 +31,4 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ghcr.io/leonbcode/tosox-jr:${{ github.ref_name }}
+          tags: ghcr.io/leonbcode/tosox-jr:${{ github.ref_name }}, ghcr.io/leonbcode/tosox-jr:latest
