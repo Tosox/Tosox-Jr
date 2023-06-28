@@ -12,6 +12,10 @@ public class SlashCommandManager extends GenericManagerBase<SlashCommandBase, Sl
     public void handle(SlashCommandInteractionEvent event) {
         String command = event.getName();
         SlashCommandBase cmd = getElement(command);
+        if (cmd == null) {
+            return;
+        }
+
         cmd.handle(event, null);
     }
 }
