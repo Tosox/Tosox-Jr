@@ -7,7 +7,7 @@ on:
 
 jobs:
   maven-build:
-    uses: ./.github/workflows/maven.yml@master
+    uses: ./.github/workflows/maven.yml
   docker-build-publish:
     runs-on: ubuntu-latest
     needs:
