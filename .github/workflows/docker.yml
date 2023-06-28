@@ -15,7 +15,7 @@ jobs:
       - name: Download Artifact
         uses: actions/download-artifact@v3
         with:
-          name: tosox-jr:${{ github.ref_name }}
+          name: tosox-jr
           path: target/tosox-jr.jar
       - name: Login to the container registry
         uses: docker/login-action@v2
