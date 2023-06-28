@@ -1,20 +1,15 @@
 package de.tosoxdev.tosoxjr.games;
 
 import de.tosoxdev.tosoxjr.GenericManagerBase;
+import de.tosoxdev.tosoxjr.games.hangman.Hangman;
 import net.dv8tion.jda.api.events.Event;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 
 public class GameManager extends GenericManagerBase<GameBase, Event> {
     public GameManager() {
-
+        addElement(new Hangman());
     }
 
     public void handle(Event event) {
-        if (event instanceof MessageReceivedEvent e) {
-
-        } else if (event instanceof MessageReactionAddEvent e) {
-
-        }
+        getElements().forEach(g -> g.handle(event));
     }
 }

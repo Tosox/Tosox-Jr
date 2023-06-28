@@ -6,6 +6,7 @@ import de.tosoxdev.tosoxjr.utils.ArgumentParser;
 import de.tosoxdev.tosoxjr.utils.Constants;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,7 +31,10 @@ public class QuoteCmd extends CommandBase {
     }
 
     @Override
-    public void handle(MessageReceivedEvent event, List<String> args) {
+    public void handle(MessageReceivedEvent event) {
+        String[] split = event.getMessage().getContentDisplay().substring(Constants.BOT_PREFIX.length()).split(" ");
+        List<String> args = Arrays.asList(split).subList(1, split.length);
+
         String source = ArgumentParser.get(args, 0);
         if (source == null) {
             String msg = String.format("Syntax: %squote <source>\n%s", Constants.BOT_PREFIX, quoteList);

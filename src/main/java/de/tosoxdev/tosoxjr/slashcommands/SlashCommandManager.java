@@ -16,6 +16,6 @@ public class SlashCommandManager extends GenericManagerBase<SlashCommandBase, Sl
             return;
         }
 
-        cmd.handle(event, null);
+        cmd.handle(event);
     }
 }

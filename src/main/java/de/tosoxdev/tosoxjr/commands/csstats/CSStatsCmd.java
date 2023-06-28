@@ -9,6 +9,7 @@ import org.json.JSONObject;
 
 import java.awt.*;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -22,7 +23,10 @@ public class CSStatsCmd extends CommandBase {
     }
 
     @Override
-    public void handle(MessageReceivedEvent event, List<String> args) {
+    public void handle(MessageReceivedEvent event) {
+        String[] split = event.getMessage().getContentDisplay().substring(Constants.BOT_PREFIX.length()).split(" ");
+        List<String> args = Arrays.asList(split).subList(1, split.length);
+
         // Check if user parameter is provided
         String user = ArgumentParser.get(args, 0);
         if (user == null) {

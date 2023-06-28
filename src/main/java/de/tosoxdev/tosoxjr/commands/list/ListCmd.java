@@ -16,7 +16,7 @@ public class ListCmd extends CommandBase {
     }
 
     @Override
-    public void handle(MessageReceivedEvent event, List<String> args) {
+    public void handle(MessageReceivedEvent event) {
         List<CommandBase> commands = Main.getCommandManager().getElements();
         commands.sort(commandSorterByName);
 

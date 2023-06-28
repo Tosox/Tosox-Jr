@@ -5,15 +5,13 @@ import de.tosoxdev.tosoxjr.slashcommands.SlashCommandBase;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
-import java.util.List;
-
 public class GetBadgeCmd extends SlashCommandBase {
     public GetBadgeCmd() {
         super("get-badge", "Needs to be run at least one time a month to keep the 'Active Developer' badge");
     }
 
     @Override
-    public void handle(SlashCommandInteractionEvent event, List<String> args) {
+    public void handle(SlashCommandInteractionEvent event) {
         Guild guild = event.getGuild();
         if (guild == null) {
             Main.getLogger().error("There is no guild available");

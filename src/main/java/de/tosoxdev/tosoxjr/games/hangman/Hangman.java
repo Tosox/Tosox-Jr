@@ -1,5 +1,6 @@
 package de.tosoxdev.tosoxjr.games.hangman;
 
+import de.tosoxdev.tosoxjr.games.GameBase;
 import de.tosoxdev.tosoxjr.utils.APIRequest;
 import de.tosoxdev.tosoxjr.utils.Constants;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -7,6 +8,8 @@ import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.entities.emoji.EmojiUnion;
+import net.dv8tion.jda.api.events.Event;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -17,9 +20,7 @@ import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
-public class Hangman {
-    private static Hangman instance;
-
+public class Hangman extends GameBase {
     private static final String API_RANDOM_WORD = "https://random-word-api.vercel.app/api?words=1";
     private static final String API_DICTIONARY = "https://www.dictionaryapi.com/api/v3/references/collegiate/json/%s?key=%s";
 
@@ -36,25 +37,32 @@ public class Hangman {
     private int attempts;
 
     public Hangman() {
-        instance = this;
+        super("hangman", "Play a game of hangman");
     }
 
-    public boolean newGame(String player, MessageChannel channel) {
-        word = generateWord();
-        if (word == null) {
-            return false;
+    @Override
+    public void handle(Event event) {
+        if (event instanceof MessageReceivedEvent e) {
+            handleMessageReceivedEvent(e);
+        } else if (event instanceof MessageReactionAddEvent e) {
+            handleMessageReactionAddEvent(e);
+        }
+    }
+
+    private void handleMessageReceivedEvent(MessageReceivedEvent event) {
+        if (player != null) {
+            event.getChannel().sendMessage("An instance of 'Hangman' is already running").queue();
+            return;
         }
 
-        word = word.toUpperCase();
-        this.channel = channel;
-        this.player = player;
-
-        channel.sendMessageEmbeds(createGameEmbed(false).build()).queue(m -> embedMessageId = m.getId());
-
-        return true;
+        String author = event.getAuthor().getAsTag();
+        MessageChannel channel = event.getChannel();
+        if (!newGame(author, channel)) {
+            event.getChannel().sendMessage("I'm unable to generate a random word :/").queue();
+        }
     }
 
-    public void handle(MessageReactionAddEvent event) {
+    private void handleMessageReactionAddEvent(MessageReactionAddEvent event) {
         // Check message
         EmojiUnion emoji = event.getEmoji();
         if (!event.getMessageId().equals(embedMessageId)) return;
@@ -113,6 +121,21 @@ public class Hangman {
             m.clearReactions().queue();
             m.editMessageEmbeds(createGameEmbed(false).build()).queue();
         });
+    }
+
+    private boolean newGame(String player, MessageChannel channel) {
+        word = generateWord();
+        if (word == null) {
+            return false;
+        }
+
+        word = word.toUpperCase();
+        this.channel = channel;
+        this.player = player;
+
+        channel.sendMessageEmbeds(createGameEmbed(false).build()).queue(m -> embedMessageId = m.getId());
+
+        return true;
     }
 
     private String getWordDefinition() {
@@ -206,13 +229,5 @@ public class Hangman {
             gameEmbed.addField("How To Play", "React with emojis (e.g. \uD83C\uDDE6, \uD83C\uDDE7) to make a guess\nReact with the joker (🃏) to get a hint", false);
         }
         return gameEmbed;
-    }
-
-    public boolean isRunning() {
-        return player != null;
-    }
-
-    public static Hangman getInstance() {
-        return instance;
     }
 }

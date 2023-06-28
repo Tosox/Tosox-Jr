@@ -1,7 +1,6 @@
 package de.tosoxdev.tosoxjr.listener;
 
 import de.tosoxdev.tosoxjr.Main;
-import de.tosoxdev.tosoxjr.games.hangman.Hangman;
 import de.tosoxdev.tosoxjr.utils.Constants;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -30,8 +29,6 @@ public class UserInputListener extends ListenerAdapter {
 
     @Override
     public void onMessageReactionAdd(@NotNull MessageReactionAddEvent event) {
-        if (Hangman.getInstance() != null) {
-            Hangman.getInstance().handle(event);
-        }
+        Main.getGameManager().handle(event);
     }
 }

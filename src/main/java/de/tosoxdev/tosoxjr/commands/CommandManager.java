@@ -11,9 +11,6 @@ import de.tosoxdev.tosoxjr.commands.say.SayCmd;
 import de.tosoxdev.tosoxjr.utils.Constants;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
-import java.util.Arrays;
-import java.util.List;
-
 public class CommandManager extends GenericManagerBase<CommandBase, MessageReceivedEvent> {
     public CommandManager() {
         addElement(new PingCmd());
@@ -39,7 +36,6 @@ public class CommandManager extends GenericManagerBase<CommandBase, MessageRecei
             return;
         }
 
-        List<String> args = Arrays.asList(split).subList(1, split.length);
-        cmd.handle(event, args);
+        cmd.handle(event);
     }
 }
