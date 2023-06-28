@@ -1,23 +1,10 @@
 package de.tosoxdev.tosoxjr.slashcommands;
 
+import de.tosoxdev.tosoxjr.GenericCommandBase;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
-public abstract class SlashCommandBase {
-    private final String name;
-    private final String description;
-
+public abstract class SlashCommandBase extends GenericCommandBase<SlashCommandInteractionEvent> {
     public SlashCommandBase(String name, String description) {
-        this.name = name;
-        this.description = description;
+        super(name, description);
     }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public abstract void handle(SlashCommandInteractionEvent event);
 }

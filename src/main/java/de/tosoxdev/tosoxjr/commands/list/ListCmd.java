@@ -17,7 +17,7 @@ public class ListCmd extends CommandBase {
 
     @Override
     public void handle(MessageReceivedEvent event, List<String> args) {
-        List<CommandBase> commands = Main.getCommandManager().getCommands();
+        List<CommandBase> commands = Main.getCommandManager().getElements();
         commands.sort(commandSorterByName);
 
         StringBuilder sb = new StringBuilder("Available Commands:\n```\n");

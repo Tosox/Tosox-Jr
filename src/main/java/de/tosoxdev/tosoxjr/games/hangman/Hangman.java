@@ -1,4 +1,4 @@
-package de.tosoxdev.tosoxjr.commands.hangman;
+package de.tosoxdev.tosoxjr.games.hangman;
 
 import de.tosoxdev.tosoxjr.utils.APIRequest;
 import de.tosoxdev.tosoxjr.utils.Constants;

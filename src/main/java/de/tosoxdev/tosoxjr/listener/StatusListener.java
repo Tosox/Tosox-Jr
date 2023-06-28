@@ -17,7 +17,7 @@ public class StatusListener extends ListenerAdapter {
         Main.getLogger().info("{} is ready", Constants.BOT_NAME);
 
         // Global application commands
-        List<CommandData> commandData = Main.getSlashCommandManager().getCommands()
+        List<CommandData> commandData = Main.getSlashCommandManager().getElements()
                 .stream()
                 .map(c -> Commands.slash(c.getName(), c.getDescription()))
                 .collect(Collectors.toList());

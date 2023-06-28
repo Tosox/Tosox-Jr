@@ -22,7 +22,7 @@ public class HelpCmd extends CommandBase {
             return;
         }
 
-        CommandBase command = Main.getCommandManager().getCommand(cmdInfo);
+        CommandBase command = Main.getCommandManager().getElement(cmdInfo);
         if (command == null) {
             event.getChannel().sendMessage("Sorry, I can't find any information about this command").queue();
             return;

@@ -1,4 +1,4 @@
-package de.tosoxdev.tosoxjr.commands.hangman;
+package de.tosoxdev.tosoxjr.games.hangman;
 
 import de.tosoxdev.tosoxjr.commands.CommandBase;
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;

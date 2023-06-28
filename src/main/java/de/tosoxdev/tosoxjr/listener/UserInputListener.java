@@ -1,7 +1,7 @@
 package de.tosoxdev.tosoxjr.listener;
 
 import de.tosoxdev.tosoxjr.Main;
-import de.tosoxdev.tosoxjr.commands.hangman.Hangman;
+import de.tosoxdev.tosoxjr.games.hangman.Hangman;
 import de.tosoxdev.tosoxjr.utils.Constants;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -12,6 +12,8 @@ import org.jetbrains.annotations.NotNull;
 public class UserInputListener extends ListenerAdapter {
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
+        Main.getGameManager().handle(event);
+
         // Check if message is a valid
         if (!event.isFromGuild()) return;
         if (!event.getMessage().getContentDisplay().startsWith(Constants.BOT_PREFIX)) return;
