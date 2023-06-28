@@ -19,6 +19,7 @@ public class Main {
     //     - applications.commands
     //   Permissions:
     //     - Send Messages
+    //     - Manage Messages
     private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
     private static final CommandManager COMMAND_MANAGER = new CommandManager();
     private static final SlashCommandManager SLASH_COMMAND_MANAGER = new SlashCommandManager();
