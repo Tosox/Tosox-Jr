@@ -2,6 +2,7 @@ package de.tosoxdev.tosoxjr.commands.help;
 
 import de.tosoxdev.tosoxjr.Main;
 import de.tosoxdev.tosoxjr.commands.CommandBase;
+import de.tosoxdev.tosoxjr.games.GameBase;
 import de.tosoxdev.tosoxjr.utils.ArgumentParser;
 import de.tosoxdev.tosoxjr.utils.Constants;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -28,7 +29,14 @@ public class HelpCmd extends CommandBase {
 
         CommandBase command = Main.getCommandManager().getElement(cmdInfo);
         if (command == null) {
-            event.getChannel().sendMessage("Sorry, I can't find any information about this command").queue();
+            // Check games
+            GameBase game = Main.getGameManager().getElement(cmdInfo);
+            if (game == null) {
+                event.getChannel().sendMessage("Sorry, I can't find any information about this command").queue();
+                return;
+            }
+
+            event.getChannel().sendMessage(game.getDescription()).queue();
             return;
         }
 

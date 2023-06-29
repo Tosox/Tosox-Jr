@@ -42,16 +42,13 @@ public class Hangman extends GameBase {
 
     @Override
     public void handle(Event event) {
-        if (event instanceof MessageReceivedEvent e) {
-            handleMessageReceivedEvent(e);
-        } else if (event instanceof MessageReactionAddEvent e) {
+        if (event instanceof MessageReactionAddEvent e) {
             handleMessageReactionAddEvent(e);
         }
     }
 
-    private void handleMessageReceivedEvent(MessageReceivedEvent event) {
-        // TODO: Register games
-
+    @Override
+    public void run(MessageReceivedEvent event) {
         if (player != null) {
             event.getChannel().sendMessage("An instance of 'Hangman' is already running").queue();
             return;
