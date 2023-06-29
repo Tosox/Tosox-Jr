@@ -1,0 +1,6 @@
+version: '3'
+
+services:
+  tosox-jr:
+    image: ghcr.io/leonbcode/tosox-jr:latest
+    env_file: stack.env
