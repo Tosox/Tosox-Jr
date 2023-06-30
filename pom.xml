@@ -52,6 +52,7 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
+                            <finalName>tosox-jr</finalName>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
                             <filters>
                                 <filter>
