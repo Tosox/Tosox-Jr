@@ -11,7 +11,6 @@ public class UserInputListener extends ListenerAdapter {
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
         Main.getGameManager().handle(event);
-        Main.getCommandManager().handle(event);
     }
 
     @Override
