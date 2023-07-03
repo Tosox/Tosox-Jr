@@ -1,6 +1,5 @@
 package de.tosoxdev.tosoxjr;
 
-import de.tosoxdev.tosoxjr.commands.CommandManager;
 import de.tosoxdev.tosoxjr.games.GameManager;
 import de.tosoxdev.tosoxjr.listener.StatusListener;
 import de.tosoxdev.tosoxjr.listener.UserInputListener;
@@ -26,7 +25,6 @@ public class Main {
     ///////////////////////////////////////////////////////////////
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
-    private static final CommandManager COMMAND_MANAGER = new CommandManager();
     private static final SlashCommandManager SLASH_COMMAND_MANAGER = new SlashCommandManager();
     private static final GameManager GAME_MANAGER = new GameManager();
 
@@ -43,10 +41,6 @@ public class Main {
 
     public static Logger getLogger() {
         return LOGGER;
-    }
-
-    public static CommandManager getCommandManager() {
-        return COMMAND_MANAGER;
     }
 
     public static SlashCommandManager getSlashCommandManager() {
