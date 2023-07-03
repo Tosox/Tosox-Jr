@@ -1,15 +1,15 @@
-package de.tosoxdev.tosoxjr.slashcommands.cat;
+package de.tosoxdev.tosoxjr.commands.cat;
 
-import de.tosoxdev.tosoxjr.slashcommands.SlashCommandBase;
+import de.tosoxdev.tosoxjr.commands.CommandBase;
 import de.tosoxdev.tosoxjr.utils.APIRequest;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import org.json.JSONArray;
 
-public class CatCmd extends SlashCommandBase {
+public class CatCmd extends CommandBase {
     private static final String CAT_API = "https://api.thecatapi.com/v1/images/search";
 
     public CatCmd() {
-        super("cat", "Get a random picture of a cat");
+        super("cat", "Get a random picture of a cat", null);
     }
 
     @Override

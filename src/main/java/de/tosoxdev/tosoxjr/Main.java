@@ -1,9 +1,9 @@
 package de.tosoxdev.tosoxjr;
 
+import de.tosoxdev.tosoxjr.commands.CommandManager;
 import de.tosoxdev.tosoxjr.games.GameManager;
 import de.tosoxdev.tosoxjr.listener.StatusListener;
 import de.tosoxdev.tosoxjr.listener.UserInputListener;
-import de.tosoxdev.tosoxjr.slashcommands.SlashCommandManager;
 import de.tosoxdev.tosoxjr.utils.Constants;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
@@ -22,10 +22,13 @@ public class Main {
     //   Permissions:
     //     - Send Messages
     //     - Manage Messages
+    //
+    // Prod: https://discord.com/api/oauth2/authorize?client_id=853752473365250089&permissions=10240&scope=bot%20applications.commands
+    // Dev : https://discord.com/api/oauth2/authorize?client_id=1125333842186752091&permissions=10240&scope=bot%20applications.commands
     ///////////////////////////////////////////////////////////////
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
-    private static final SlashCommandManager SLASH_COMMAND_MANAGER = new SlashCommandManager();
+    private static final CommandManager COMMAND_MANAGER = new CommandManager();
     private static final GameManager GAME_MANAGER = new GameManager();
 
     public static void main(String[] args) throws InterruptedException {
@@ -43,8 +46,8 @@ public class Main {
         return LOGGER;
     }
 
-    public static SlashCommandManager getSlashCommandManager() {
-        return SLASH_COMMAND_MANAGER;
+    public static CommandManager getCommandManager() {
+        return COMMAND_MANAGER;
     }
 
     public static GameManager getGameManager() {

@@ -37,7 +37,7 @@ public class Hangman extends GameBase {
     private int attempts;
 
     public Hangman() {
-        super("hangman", "Play a game of hangman");
+        super("hangman", "Play a game of hangman", null);
     }
 
     @Override

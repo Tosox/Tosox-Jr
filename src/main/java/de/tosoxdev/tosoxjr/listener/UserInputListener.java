@@ -15,7 +15,7 @@ public class UserInputListener extends ListenerAdapter {
 
     @Override
     public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) {
-        Main.getSlashCommandManager().handle(event);
+        Main.getCommandManager().handle(event);
     }
 
     @Override
