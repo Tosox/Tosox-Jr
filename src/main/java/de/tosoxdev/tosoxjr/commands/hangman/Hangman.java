@@ -29,14 +29,16 @@ public class Hangman {
     private final Set<Character> guessedLetters = new HashSet<>();
     private final MessageChannel channel;
     private final String player;
+    private final boolean coop;
     private String embedMessageId;
     private String word;
     private String wordDefinition;
     private int attempts;
 
-    public Hangman(String player, MessageChannel channel) {
+    public Hangman(String player, MessageChannel channel, boolean coop) {
         this.channel = channel;
         this.player = player;
+        this.coop = coop;
     }
 
     public boolean initialize() {
@@ -67,7 +69,7 @@ public class Hangman {
         User sender = event.getUser();
         if (sender == null) return;
         if (sender.isBot()) return;
-        if (!sender.getAsTag().equals(player)) return;
+        if ((!coop) && (!sender.getAsTag().equals(player))) return;
 
         // Get code point from emoji
         int codePoint = emoji.getName().codePointAt(0);

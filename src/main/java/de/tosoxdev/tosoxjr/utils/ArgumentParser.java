@@ -18,4 +18,8 @@ public class ArgumentParser {
         }
         return argRaw;
     }
+
+    public static boolean getBoolean(OptionMapping arg, boolean fallback) {
+        return arg != null ? arg.getAsBoolean() : fallback;
+    }
 }
