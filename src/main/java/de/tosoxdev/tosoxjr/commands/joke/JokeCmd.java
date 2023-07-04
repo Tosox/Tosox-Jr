@@ -2,7 +2,6 @@ package de.tosoxdev.tosoxjr.commands.joke;
 
 import de.tosoxdev.tosoxjr.Main;
 import de.tosoxdev.tosoxjr.commands.CommandBase;
-import de.tosoxdev.tosoxjr.commands.quote.Quote;
 import de.tosoxdev.tosoxjr.utils.ArgumentParser;
 import de.tosoxdev.tosoxjr.utils.Utils;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
