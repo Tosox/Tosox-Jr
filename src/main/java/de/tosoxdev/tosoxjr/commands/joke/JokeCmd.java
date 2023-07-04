@@ -1,7 +1,8 @@
-package de.tosoxdev.tosoxjr.commands.quote;
+package de.tosoxdev.tosoxjr.commands.joke;
 
 import de.tosoxdev.tosoxjr.Main;
 import de.tosoxdev.tosoxjr.commands.CommandBase;
+import de.tosoxdev.tosoxjr.commands.quote.Quote;
 import de.tosoxdev.tosoxjr.utils.ArgumentParser;
 import de.tosoxdev.tosoxjr.utils.Utils;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -14,18 +15,16 @@ import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class QuoteCmd extends CommandBase {
+public class JokeCmd extends CommandBase {
     private final HashMap<String, Callable<String>> categories = new HashMap<>(Map.of(
-            "breaking-bad", Quote::getBreakingBad,
-            "famous", Quote::getFamous,
-            "wisdom", Quote::getWisdom,
-            "inspirational", Quote::getInspirational
+            "general", Joke::getGeneral,
+            "programming", Joke::getProgramming
     ));
     private final String categoriesList;
 
-    public QuoteCmd() {
-        super("quote", "Show a random quote", List.of(
-                new OptionData(OptionType.STRING, "category", "List all available categories with '/quote list'", false)
+    public JokeCmd() {
+        super("joke", "Show a random joke", List.of(
+                new OptionData(OptionType.STRING, "category", "List all available categories with '/joke list'", false)
         ));
 
         StringBuilder sb = new StringBuilder();
@@ -37,18 +36,18 @@ public class QuoteCmd extends CommandBase {
     public void handle(SlashCommandInteractionEvent event) {
         String category = ArgumentParser.getString(event.getOption("category"));
         if (category == null) {
-            // Get random quote
+            // Get random joke
             int randomIdx = ThreadLocalRandom.current().nextInt(categories.size());
             String randomCategory = (String) categories.keySet().toArray()[randomIdx];
             Callable<String> callable = categories.get(randomCategory);
 
-            String quote = Utils.getStringFromCallable(callable);
-            if (quote == null) {
-                Main.getLogger().error("The callable didn't return a value when trying to run 'quote'");
+            String joke = Utils.getStringFromCallable(callable);
+            if (joke == null) {
+                Main.getLogger().error("The callable didn't return a value when trying to run 'joke'");
                 return;
             }
 
-            event.reply(quote).queue();
+            event.reply(joke).queue();
             return;
         }
 
@@ -60,17 +59,17 @@ public class QuoteCmd extends CommandBase {
 
         Callable<String> callable = categories.get(category);
         if (callable == null) {
-            String msg = String.format("There are no quotes for '%s'. Try running /quote list", category);
+            String msg = String.format("There are no jokes for '%s'. Try running /joke list", category);
             event.reply(msg).queue();
             return;
         }
 
-        String quote = Utils.getStringFromCallable(callable);
-        if (quote == null) {
-            Main.getLogger().error("The callable didn't return a value when trying to run 'quote'");
+        String joke = Utils.getStringFromCallable(callable);
+        if (joke == null) {
+            Main.getLogger().error("The callable didn't return a value when trying to run 'joke'");
             return;
         }
 
-        event.reply(quote).queue();
+        event.reply(joke).queue();
     }
 }
