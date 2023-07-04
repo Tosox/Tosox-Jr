@@ -10,6 +10,7 @@ import net.dv8tion.jda.api.entities.emoji.EmojiUnion;
 import net.dv8tion.jda.api.events.Event;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.awt.*;
@@ -179,13 +180,15 @@ public class Hangman {
             return "_Unknown_";
         }
 
-        // Check if one definition
-        if (response.length() == 1) {
-            return response.getString(0);
+        // Check if word exists in dictionary
+        JSONObject objDefinition;
+        try {
+            objDefinition = response.getJSONObject(0);
+        } catch (JSONException e) {
+            return "_Unknown_";
         }
 
         // If multiple definitions
-        JSONObject objDefinition = response.getJSONObject(0);
         JSONArray shortDefinitions = objDefinition.getJSONArray("shortdef");
         if ((shortDefinitions == null) || (shortDefinitions.isEmpty())) {
             return "_Unknown_";
