@@ -2,25 +2,25 @@ package de.tosoxdev.tosoxjr.commands.cat;
 
 import de.tosoxdev.tosoxjr.commands.CommandBase;
 import de.tosoxdev.tosoxjr.utils.APIRequest;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import org.json.JSONArray;
 
 public class CatCmd extends CommandBase {
     private static final String CAT_API = "https://api.thecatapi.com/v1/images/search";
 
     public CatCmd() {
-        super("cat", "Get a random picture of a cat");
+        super("cat", "Get a random picture of a cat", null);
     }
 
     @Override
-    public void handle(MessageReceivedEvent event) {
+    public void handle(SlashCommandInteractionEvent event) {
         JSONArray response = (JSONArray) APIRequest.getJson(CAT_API);
         if ((response == null) || (response.isEmpty())) {
-            event.getChannel().sendMessage("Unable to get a cat image :(").queue();
+            event.reply("Unable to get a cat image :(").queue();
             return;
         }
 
         String url = response.getJSONObject(0).getString("url");
-        event.getChannel().sendMessage(url).queue();
+        event.reply(url).queue();
     }
 }

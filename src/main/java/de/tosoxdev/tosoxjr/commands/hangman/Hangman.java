@@ -1,6 +1,5 @@
-package de.tosoxdev.tosoxjr.games.hangman;
+package de.tosoxdev.tosoxjr.commands.hangman;
 
-import de.tosoxdev.tosoxjr.games.GameBase;
 import de.tosoxdev.tosoxjr.utils.APIRequest;
 import de.tosoxdev.tosoxjr.utils.Constants;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -9,7 +8,6 @@ import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.entities.emoji.EmojiUnion;
 import net.dv8tion.jda.api.events.Event;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -20,7 +18,7 @@ import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
-public class Hangman extends GameBase {
+public class Hangman {
     private static final String API_RANDOM_WORD = "https://random-word-api.vercel.app/api?words=1";
     private static final String API_DICTIONARY = "https://www.dictionaryapi.com/api/v3/references/collegiate/json/%s?key=%s";
 
@@ -29,35 +27,33 @@ public class Hangman extends GameBase {
     private static final int JOKER_CP = 0x1F0CF;
 
     private final Set<Character> guessedLetters = new HashSet<>();
-    private MessageChannel channel;
+    private final MessageChannel channel;
+    private final String player;
     private String embedMessageId;
-    private String player;
     private String word;
     private String wordDefinition;
     private int attempts;
 
-    public Hangman() {
-        super("hangman", "Play a game of hangman");
+    public Hangman(String player, MessageChannel channel) {
+        this.channel = channel;
+        this.player = player;
     }
 
-    @Override
-    public void handle(Event event) {
+    public boolean initialize() {
+        word = generateWord();
+        if (word == null) {
+            channel.sendMessage("I'm unable to generate a random word").queue();
+            return false;
+        }
+
+        word = word.toUpperCase();
+        channel.sendMessageEmbeds(createGameEmbed(false).build()).queue(m -> embedMessageId = m.getId());
+        return true;
+    }
+
+    public void handleEvent(Event event) {
         if (event instanceof MessageReactionAddEvent e) {
             handleMessageReactionAddEvent(e);
-        }
-    }
-
-    @Override
-    public void run(MessageReceivedEvent event) {
-        if (player != null) {
-            event.getChannel().sendMessage("An instance of 'Hangman' is already running").queue();
-            return;
-        }
-
-        String author = event.getAuthor().getAsTag();
-        MessageChannel channel = event.getChannel();
-        if (!newGame(author, channel)) {
-            event.getChannel().sendMessage("I'm unable to generate a random word :/").queue();
         }
     }
 
@@ -122,21 +118,6 @@ public class Hangman extends GameBase {
         });
     }
 
-    private boolean newGame(String player, MessageChannel channel) {
-        word = generateWord();
-        if (word == null) {
-            return false;
-        }
-
-        word = word.toUpperCase();
-        this.channel = channel;
-        this.player = player;
-
-        channel.sendMessageEmbeds(createGameEmbed(false).build()).queue(m -> embedMessageId = m.getId());
-
-        return true;
-    }
-
     private String getWordDefinition() {
         JSONArray response = (JSONArray) APIRequest.getJson(String.format(API_DICTIONARY, word, Constants.DICTIONARY_API_KEY));
         if ((response == null) || (response.isEmpty())) {
@@ -162,20 +143,11 @@ public class Hangman extends GameBase {
     }
 
     private void endGame() {
-        // Send embed
         channel.retrieveMessageById(embedMessageId).queue(m -> {
             m.clearReactions().queue();
             m.editMessageEmbeds(createGameEmbed(true).build()).queue();
-
-            // Reset variables
-            guessedLetters.clear();
-            channel = null;
-            embedMessageId = null;
-            player = null;
-            word = null;
-            wordDefinition = null;
-            attempts = 0;
         });
+        HangmanCmd.getInstance().removePlayer(player);
     }
 
     private String generateWord() {

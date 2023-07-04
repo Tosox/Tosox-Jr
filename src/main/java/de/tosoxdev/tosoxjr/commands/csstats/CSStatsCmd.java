@@ -2,14 +2,14 @@ package de.tosoxdev.tosoxjr.commands.csstats;
 
 import de.tosoxdev.tosoxjr.commands.CommandBase;
 import de.tosoxdev.tosoxjr.utils.ArgumentParser;
-import de.tosoxdev.tosoxjr.utils.Constants;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.interactions.commands.OptionType;
+import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import org.json.JSONObject;
 
 import java.awt.*;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -19,27 +19,21 @@ public class CSStatsCmd extends CommandBase {
     private final CSStats csStats = new CSStats();
 
     public CSStatsCmd() {
-        super("cs-stats", "Get some CS:GO statistics about the given player");
+        super("cs-stats", "Get some CS:GO statistics about the given player", List.of(
+                new OptionData(OptionType.STRING, "user", "The user id64 or the url of the steam profile", true),
+                new OptionData(OptionType.STRING, "stat", "A statistic to retrieve from the user statistics", false)
+        ));
     }
 
     @Override
-    public void handle(MessageReceivedEvent event) {
-        String[] split = event.getMessage().getContentDisplay().substring(Constants.BOT_PREFIX.length()).split(" ");
-        List<String> args = Arrays.asList(split).subList(1, split.length);
-
-        // Check if user parameter is provided
-        String user = ArgumentParser.get(args, 0);
-        if (user == null) {
-            String msg = String.format("Please use the correct syntax: %scsstats <userid/userurl> <optional: stat>", Constants.BOT_PREFIX);
-            event.getChannel().sendMessage(msg).queue();
-            return;
-        }
+    public void handle(SlashCommandInteractionEvent event) {
+        String user = ArgumentParser.getStringForced(event.getOption("user"));
 
         // Check and get steamid64
         String userid = csStats.getID64(user);
         if (userid == null) {
             String msg = String.format("Couldn't find user id from user url: %s", user);
-            event.getChannel().sendMessage(msg).queue();
+            event.reply(msg).queue();
             return;
         }
 
@@ -47,26 +41,26 @@ public class CSStatsCmd extends CommandBase {
         JSONObject userStats = csStats.getStatistics(userid);
         if (userStats == null) {
             String msg = String.format("Couldn't find user: %s", user);
-            event.getChannel().sendMessage(msg).queue();
+            event.reply(msg).queue();
             return;
         } else if (userStats.isEmpty()) {
             String msg = String.format("User '%s' set 'Game Details' to private or friends only", user);
-            event.getChannel().sendMessage(msg).queue();
+            event.reply(msg).queue();
             return;
         }
 
         // Check if a statistic parameter is provided
-        String stat = ArgumentParser.get(args, 1);
+        String stat = ArgumentParser.getString(event.getOption("stat"));
         if (stat != null) {
             // Check if statistic exists
             String statistic = csStats.getStatistic(userStats, stat);
             if (statistic == null) {
                 String msg = String.format("Couldn't find statistic: %s", stat);
-                event.getChannel().sendMessage(msg).queue();
+                event.reply(msg).queue();
                 return;
             }
 
-            event.getChannel().sendMessage(statistic).queue();
+            event.reply(statistic).queue();
             return;
         }
 
@@ -111,6 +105,6 @@ public class CSStatsCmd extends CommandBase {
         statsEmbed.addField("**Winrate**", wr + "%", true);
         statsEmbed.setFooter("Request made @ " + formatter.format(new Date()), null);
 
-        event.getChannel().sendMessageEmbeds(statsEmbed.build()).queue();
+        event.replyEmbeds(statsEmbed.build()).queue();
     }
 }
