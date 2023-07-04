@@ -2,9 +2,9 @@ package de.tosoxdev.tosoxjr.commands;
 
 import de.tosoxdev.tosoxjr.commands.cat.CatCmd;
 import de.tosoxdev.tosoxjr.commands.csstats.CSStatsCmd;
+import de.tosoxdev.tosoxjr.commands.hangman.HangmanCmd;
 import de.tosoxdev.tosoxjr.commands.quote.QuoteCmd;
 import de.tosoxdev.tosoxjr.commands.say.SayCmd;
-import de.tosoxdev.tosoxjr.games.hangman.Hangman;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import org.jetbrains.annotations.NotNull;
 
@@ -19,6 +19,7 @@ public class CommandManager {
         addCommand(new CatCmd());
         addCommand(new QuoteCmd());
         addCommand(new CSStatsCmd());
+        addCommand(new HangmanCmd());
     }
 
     public List<CommandBase> getCommands() {
