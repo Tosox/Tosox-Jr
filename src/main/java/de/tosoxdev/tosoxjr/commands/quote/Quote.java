@@ -2,11 +2,10 @@ package de.tosoxdev.tosoxjr.commands.quote;
 
 import de.tosoxdev.tosoxjr.utils.APIRequest;
 import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.util.concurrent.Callable;
 
 public class Quote {
+    private final static String QUOTE_TEMPLATE = "_%s_\n~ %s";
+
     public static String getBreakingBad() {
         JSONArray response = (JSONArray) APIRequest.getJson("https://api.breakingbadquotes.xyz/v1/quotes");
         if ((response == null) || (response.isEmpty())) {
@@ -15,18 +14,7 @@ public class Quote {
 
         String quote = response.getJSONObject(0).getString("quote");
         String author = response.getJSONObject(0).getString("author");
-        return String.format("_%s_\n~ %s", quote, author);
-    }
-
-    public static String getJoke() {
-        JSONObject response = (JSONObject) APIRequest.getJson("https://official-joke-api.appspot.com/jokes/random");
-        if (response == null) {
-            return null;
-        }
-
-        String setup = response.getString("setup");
-        String punchline = response.getString("punchline");
-        return String.format("%s\n... %s", setup, punchline);
+        return String.format(QUOTE_TEMPLATE, quote, author);
     }
 
     public static String getFamous() {
@@ -37,7 +25,7 @@ public class Quote {
 
         String content = response.getJSONObject(0).getString("content");
         String author = response.getJSONObject(0).getString("author");
-        return String.format("_%s_\n~ %s", content, author);
+        return String.format(QUOTE_TEMPLATE, content, author);
     }
 
     public static String getWisdom() {
@@ -48,7 +36,7 @@ public class Quote {
 
         String content = response.getJSONObject(0).getString("content");
         String author = response.getJSONObject(0).getString("author");
-        return String.format("_%s_\n~ %s", content, author);
+        return String.format(QUOTE_TEMPLATE, content, author);
     }
 
     public static String getInspirational() {
@@ -59,14 +47,6 @@ public class Quote {
 
         String q = response.getJSONObject(0).getString("q");
         String a = response.getJSONObject(0).getString("a");
-        return String.format("_%s_\n~ %s", q, a);
-    }
-
-    public static String getFromCallable(Callable<String> callable) {
-        try {
-            return callable.call();
-        } catch (Exception e) {
-            return null;
-        }
+        return String.format(QUOTE_TEMPLATE, q, a);
     }
 }
