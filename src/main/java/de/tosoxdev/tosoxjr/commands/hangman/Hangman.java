@@ -15,21 +15,43 @@ import org.json.JSONObject;
 import java.awt.*;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
+
+enum GameState {
+    ONGOING("Hangman"),
+    WIN("You won!"),
+    DEFEAT("You lost!"),
+    TIMEOUT("Timeout");
+
+    private final String title;
+
+    GameState(String title) {
+        this.title = title;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+}
 
 public class Hangman {
     private static final String API_RANDOM_WORD = "https://random-word-api.vercel.app/api?words=1";
     private static final String API_DICTIONARY = "https://www.dictionaryapi.com/api/v3/references/collegiate/json/%s?key=%s";
-
     private static final int REGIONAL_INDICATOR_A_CP = 0x1F1E6;
     private static final int REGIONAL_INDICATOR_Z_CP = 0x1F1FF;
     private static final int JOKER_CP = 0x1F0CF;
+    private static final int STOP_SIGN_CP = 0x1F6D1;
+    private static final int TIMEOUT_MS = 2 * 60 * 1000;
 
     private final Set<Character> guessedLetters = new HashSet<>();
     private final MessageChannel channel;
     private final String player;
     private final boolean coop;
+
+    private Timer timer = new Timer();
     private String embedMessageId;
     private String word;
     private String wordDefinition;
@@ -48,8 +70,16 @@ public class Hangman {
             return false;
         }
 
+        // Set timeout timer
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                endGame(GameState.TIMEOUT);
+            }
+        }, TIMEOUT_MS);
+
         word = word.toUpperCase();
-        channel.sendMessageEmbeds(createGameEmbed(false).build()).queue(m -> embedMessageId = m.getId());
+        channel.sendMessageEmbeds(createGameEmbed(GameState.ONGOING).build()).queue(m -> embedMessageId = m.getId());
         return true;
     }
 
@@ -71,8 +101,17 @@ public class Hangman {
         if (sender.isBot()) return;
         if ((!coop) && (!sender.getAsTag().equals(player))) return;
 
+        // Reset timeout timer
+        resetTimer();
+
         // Get code point from emoji
         int codePoint = emoji.getName().codePointAt(0);
+
+        // Check if stop
+        if (codePoint == STOP_SIGN_CP) {
+            endGame(GameState.DEFEAT);
+            return;
+        }
 
         // Check if joker
         if (codePoint == JOKER_CP) {
@@ -84,7 +123,7 @@ public class Hangman {
             // Send embed
             channel.retrieveMessageById(embedMessageId).queue(m -> {
                 m.clearReactions().queue();
-                m.editMessageEmbeds(createGameEmbed(false).build()).queue();
+                m.editMessageEmbeds(createGameEmbed(GameState.ONGOING).build()).queue();
             });
 
             return;
@@ -104,20 +143,31 @@ public class Hangman {
             attempts++;
             if (attempts == 7) {
                 // Player didn't manage to guess the word
-                endGame();
+                endGame(GameState.DEFEAT);
                 return;
             }
-        } else if (!createWordTemplate(false).contains("_")) {
+        } else if (!showWord().contains("_")) {
             // Player managed to guess the word
-            endGame();
+            endGame(GameState.WIN);
             return;
         }
 
         // Send embed
         channel.retrieveMessageById(embedMessageId).queue(m -> {
             m.clearReactions().queue();
-            m.editMessageEmbeds(createGameEmbed(false).build()).queue();
+            m.editMessageEmbeds(createGameEmbed(GameState.ONGOING).build()).queue();
         });
+    }
+
+    private void resetTimer() {
+        timer.cancel();
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                endGame(GameState.TIMEOUT);
+            }
+        }, TIMEOUT_MS);
     }
 
     private String getWordDefinition() {
@@ -144,10 +194,11 @@ public class Hangman {
         return (char)((char) relativeChar + 'A');
     }
 
-    private void endGame() {
+    private void endGame(GameState state) {
+        timer.cancel();
         channel.retrieveMessageById(embedMessageId).queue(m -> {
             m.clearReactions().queue();
-            m.editMessageEmbeds(createGameEmbed(true).build()).queue();
+            m.editMessageEmbeds(createGameEmbed(state).build()).queue();
         });
         HangmanCmd.getInstance().removePlayer(player);
     }
@@ -162,9 +213,15 @@ public class Hangman {
         return response.substring(2, response.length() - 2);
     }
 
-    private String createWordTemplate(boolean show) {
+    private String showWord() {
         return word.chars()
-                .mapToObj(c -> show ? ((char) c + " ") : (guessedLetters.contains((char) c) ? (char) c + " " : "_ "))
+                .mapToObj(c -> (guessedLetters.contains((char) c) ? (char) c + " " : "_ "))
+                .collect(Collectors.joining());
+    }
+
+    private String revealWord() {
+        return word.chars()
+                .mapToObj(c -> ((char) c + " "))
                 .collect(Collectors.joining());
     }
 
@@ -188,18 +245,24 @@ public class Hangman {
                 + "```";
     }
 
-    private EmbedBuilder createGameEmbed(boolean isEndScreen) {
+    private EmbedBuilder createGameEmbed(GameState state) {
         EmbedBuilder gameEmbed = new EmbedBuilder();
-        gameEmbed.setTitle(!isEndScreen ? "Hangman" : (attempts == 7 ? "You lost!" : "You won!"));
+        gameEmbed.setTitle(state.getTitle());
         gameEmbed.setColor(Color.BLUE);
         gameEmbed.setDescription(createDescription());
-        gameEmbed.addField("Word", "```" + createWordTemplate(isEndScreen) + "```", false);
+        gameEmbed.addField("Word", "```" + (state == GameState.ONGOING ? showWord() : revealWord()) + "```", false);
         gameEmbed.addField("Used Letters", createGuessedWords(), false);
-        if (!isEndScreen) {
+        if (state == GameState.ONGOING) {
             if (wordDefinition != null) {
                 gameEmbed.addField("Hint", wordDefinition, false);
             }
-            gameEmbed.addField("How To Play", "React with emojis (e.g. \uD83C\uDDE6, \uD83C\uDDE7) to make a guess\nReact with the joker (🃏) to get a hint", false);
+            gameEmbed.addField(
+                    "How To Play",
+                    """
+                    React with emojis (e.g. \uD83C\uDDE6, \uD83C\uDDE7) to make a guess
+                    React with the joker (🃏) to get a hint
+                    React with the stop sign (🛑) to end the game
+                    """, false);
         }
         return gameEmbed;
     }
