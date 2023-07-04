@@ -6,7 +6,6 @@ import de.tosoxdev.tosoxjr.commands.hangman.HangmanCmd;
 import de.tosoxdev.tosoxjr.commands.quote.QuoteCmd;
 import de.tosoxdev.tosoxjr.commands.say.SayCmd;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +33,6 @@ public class CommandManager {
         commands.add(cmd);
     }
 
-    @NotNull
     public CommandBase getCommand(String name) {
         return commands.stream()
                 .filter(cmd -> cmd.getName().equalsIgnoreCase(name))
