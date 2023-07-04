@@ -1,7 +1,6 @@
 package de.tosoxdev.tosoxjr;
 
 import de.tosoxdev.tosoxjr.commands.CommandManager;
-import de.tosoxdev.tosoxjr.games.GameManager;
 import de.tosoxdev.tosoxjr.listener.StatusListener;
 import de.tosoxdev.tosoxjr.listener.UserInputListener;
 import de.tosoxdev.tosoxjr.utils.Constants;
@@ -29,7 +28,6 @@ public class Main {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
     private static final CommandManager COMMAND_MANAGER = new CommandManager();
-    private static final GameManager GAME_MANAGER = new GameManager();
 
     public static void main(String[] args) throws InterruptedException {
         JDABuilder.createDefault(Constants.BOT_TOKEN)
@@ -48,9 +46,5 @@ public class Main {
 
     public static CommandManager getCommandManager() {
         return COMMAND_MANAGER;
-    }
-
-    public static GameManager getGameManager() {
-        return GAME_MANAGER;
     }
 }
