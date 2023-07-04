@@ -11,19 +11,32 @@ import java.util.HashMap;
 import java.util.List;
 
 public class HangmanCmd extends GameBase {
-    private final HashMap<String, Hangman> games = new HashMap<>();
     private static final int MAX_GAMES = 10;
     private static HangmanCmd instance;
+    private final HashMap<String, Hangman> games = new HashMap<>();
+    private final String languages;
 
     public HangmanCmd() {
         super("hangman", "Play a game of Hangman", List.of(
+                new OptionData(OptionType.STRING, "lang", "Decide the langauge of the word. Use '/hangman list' to list all available ones", false),
                 new OptionData(OptionType.BOOLEAN, "coop", "Play Hangman with all your friends on the server", false)
         ));
         instance = this;
+
+        StringBuilder sb = new StringBuilder();
+        Hangman.RANDOM_WORD_APIS.forEach((key, value) -> sb.append(String.format("- %s\n", key)));
+        languages = sb.toString();
     }
 
     @Override
     public void handle(SlashCommandInteractionEvent event) {
+        String lang = ArgumentParser.getString(event.getOption("lang"), "");
+        if (lang.equalsIgnoreCase("list")) {
+            String msg = String.format("Available languages\n%s", languages);
+            event.reply(msg).queue();
+            return;
+        }
+
         String user = event.getUser().getAsTag();
         if (games.containsKey(user)) {
             event.reply("You already started a game of Hangman").queue();
@@ -38,7 +51,7 @@ public class HangmanCmd extends GameBase {
         event.deferReply().queue(m -> m.deleteOriginal().queue());
 
         boolean coop = ArgumentParser.getBoolean(event.getOption("coop"), false);
-        Hangman hangman = new Hangman(user, event.getChannel(), coop);
+        Hangman hangman = new Hangman(user, event.getChannel(), coop, lang);
         if (hangman.initialize()) {
             games.put(user, hangman);
         }

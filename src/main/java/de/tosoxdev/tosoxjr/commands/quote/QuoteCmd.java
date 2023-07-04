@@ -35,7 +35,7 @@ public class QuoteCmd extends CommandBase {
 
     @Override
     public void handle(SlashCommandInteractionEvent event) {
-        String category = ArgumentParser.getString(event.getOption("category"));
+        String category = ArgumentParser.getString(event.getOption("category"), null);
         if (category == null) {
             // Get random quote
             int randomIdx = ThreadLocalRandom.current().nextInt(categories.size());

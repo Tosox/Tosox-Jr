@@ -34,7 +34,7 @@ public class JokeCmd extends CommandBase {
 
     @Override
     public void handle(SlashCommandInteractionEvent event) {
-        String category = ArgumentParser.getString(event.getOption("category"));
+        String category = ArgumentParser.getString(event.getOption("category"), null);
         if (category == null) {
             // Get random joke
             int randomIdx = ThreadLocalRandom.current().nextInt(categories.size());

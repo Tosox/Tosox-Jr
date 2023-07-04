@@ -17,7 +17,7 @@ public class SayCmd extends CommandBase {
 
     @Override
     public void handle(SlashCommandInteractionEvent event) {
-        String sayMsg = ArgumentParser.getStringForced(event.getOption("message"));
+        String sayMsg = ArgumentParser.getString(event.getOption("message"), "");
         event.deferReply().queue(m -> m.deleteOriginal().queue());
         event.getChannel().sendMessage(sayMsg).queue();
     }

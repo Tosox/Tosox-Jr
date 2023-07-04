@@ -27,7 +27,7 @@ public class CSStatsCmd extends CommandBase {
 
     @Override
     public void handle(SlashCommandInteractionEvent event) {
-        String user = ArgumentParser.getStringForced(event.getOption("user"));
+        String user = ArgumentParser.getString(event.getOption("user"), "");
 
         // Check and get steamid64
         String userid = csStats.getID64(user);
@@ -50,7 +50,7 @@ public class CSStatsCmd extends CommandBase {
         }
 
         // Check if a statistic parameter is provided
-        String stat = ArgumentParser.getString(event.getOption("stat"));
+        String stat = ArgumentParser.getString(event.getOption("stat"), null);
         if (stat != null) {
             // Check if statistic exists
             String statistic = csStats.getStatistic(userStats, stat);
