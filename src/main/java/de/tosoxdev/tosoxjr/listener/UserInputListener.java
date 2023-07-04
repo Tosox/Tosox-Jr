@@ -1,10 +1,8 @@
 package de.tosoxdev.tosoxjr.listener;
 
 import de.tosoxdev.tosoxjr.Main;
-import de.tosoxdev.tosoxjr.commands.hangman.Hangman;
 import de.tosoxdev.tosoxjr.commands.hangman.HangmanCmd;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
