@@ -17,7 +17,8 @@ import java.util.concurrent.ThreadLocalRandom;
 public class JokeCmd extends CommandBase {
     private final HashMap<String, Callable<String>> categories = new HashMap<>(Map.of(
             "general", Joke::getGeneral,
-            "programming", Joke::getProgramming
+            "programming", Joke::getProgramming,
+            "chuck-norris", Joke::getChuckNorris
     ));
     private final String categoriesList;
 
