@@ -18,7 +18,7 @@ public class HangmanCmd extends GameBase {
 
     public HangmanCmd() {
         super("hangman", "Play a game of Hangman", List.of(
-                new OptionData(OptionType.STRING, "lang", "Decide the langauge of the word. Use '/hangman list' to list all available ones", false),
+                new OptionData(OptionType.STRING, "lang", "Decide the langauge of the word. Use 'list' to list all available ones", false),
                 new OptionData(OptionType.BOOLEAN, "coop", "Play Hangman with all your friends on the server", false)
         ));
         instance = this;

@@ -14,10 +14,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.awt.*;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
@@ -39,7 +36,11 @@ enum GameState {
 }
 
 public class Hangman {
-    private static final String API_RANDOM_WORD = "https://random-word-api.vercel.app/api?words=1";
+    public static final HashMap<String, String> RANDOM_WORD_APIS = new HashMap<>(Map.of(
+            "en", "https://random-word-api.vercel.app/api?words=1",
+            "de", "https://alex-riedel.de/randV2.php?anz=1"
+    ));
+
     private static final String API_DICTIONARY = "https://www.dictionaryapi.com/api/v3/references/collegiate/json/%s?key=%s";
     private static final int REGIONAL_INDICATOR_A_CP = 0x1F1E6;
     private static final int REGIONAL_INDICATOR_Z_CP = 0x1F1FF;
@@ -51,6 +52,7 @@ public class Hangman {
     private final MessageChannel channel;
     private final String player;
     private final boolean coop;
+    private final String language;
 
     private Timer timer = new Timer();
     private String embedMessageId;
@@ -58,10 +60,11 @@ public class Hangman {
     private String wordDefinition;
     private int attempts;
 
-    public Hangman(String player, MessageChannel channel, boolean coop) {
+    public Hangman(String player, MessageChannel channel, boolean coop, String language) {
         this.channel = channel;
         this.player = player;
         this.coop = coop;
+        this.language = language;
     }
 
     public boolean initialize() {
@@ -216,7 +219,8 @@ public class Hangman {
     }
 
     private String generateWord() {
-        String response = APIRequest.getString(API_RANDOM_WORD);
+        String lang = RANDOM_WORD_APIS.getOrDefault(language.toLowerCase(), RANDOM_WORD_APIS.get("en"));
+        String response = APIRequest.getString(lang);
         if (response == null) {
             return null;
         }
