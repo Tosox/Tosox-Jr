@@ -12,11 +12,12 @@ import java.util.List;
 
 public class HangmanCmd extends GameBase {
     private final HashMap<String, Hangman> games = new HashMap<>();
+    private static final int MAX_GAMES = 10;
     private static HangmanCmd instance;
 
     public HangmanCmd() {
-        super("hangman", "Play a game of hangman", List.of(
-                new OptionData(OptionType.BOOLEAN, "coop", "Play hangman with all your friends on the server", false)
+        super("hangman", "Play a game of Hangman", List.of(
+                new OptionData(OptionType.BOOLEAN, "coop", "Play Hangman with all your friends on the server", false)
         ));
         instance = this;
     }
@@ -25,7 +26,12 @@ public class HangmanCmd extends GameBase {
     public void handle(SlashCommandInteractionEvent event) {
         String user = event.getUser().getAsTag();
         if (games.containsKey(user)) {
-            event.reply("An instance of 'hangman' is already running").queue();
+            event.reply("You already started a game of Hangman").queue();
+            return;
+        }
+
+        if (games.size() > MAX_GAMES) {
+            event.reply("Sorry, there are to many games of Hangman already").queue();
             return;
         }
 
@@ -41,7 +47,7 @@ public class HangmanCmd extends GameBase {
     @Override
     public void handleEvent(Event event) {
         for (Hangman hangman : games.values()) {
-            hangman.handleEvent(event);
+            new Thread(() -> hangman.handleEvent(event)).start();
         }
     }
 
