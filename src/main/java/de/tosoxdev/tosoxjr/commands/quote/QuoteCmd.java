@@ -25,7 +25,7 @@ public class QuoteCmd extends CommandBase {
 
     public QuoteCmd() {
         super("quote", "Show a random quote", List.of(
-                new OptionData(OptionType.STRING, "category", "List all available categories with '/quote list'", false)
+                new OptionData(OptionType.STRING, "category", "List all available categories with 'list'", false)
         ));
 
         StringBuilder sb = new StringBuilder();
@@ -60,7 +60,7 @@ public class QuoteCmd extends CommandBase {
 
         Callable<String> callable = categories.get(category);
         if (callable == null) {
-            String msg = String.format("There are no quotes for '%s'. Try running /quote list", category);
+            String msg = String.format("There are no quotes for '%s'", category);
             event.reply(msg).queue();
             return;
         }

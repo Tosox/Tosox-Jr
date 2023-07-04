@@ -24,7 +24,7 @@ public class JokeCmd extends CommandBase {
 
     public JokeCmd() {
         super("joke", "Show a random joke", List.of(
-                new OptionData(OptionType.STRING, "category", "List all available categories with '/joke list'", false)
+                new OptionData(OptionType.STRING, "category", "List all available categories with 'list'", false)
         ));
 
         StringBuilder sb = new StringBuilder();
@@ -59,7 +59,7 @@ public class JokeCmd extends CommandBase {
 
         Callable<String> callable = categories.get(category);
         if (callable == null) {
-            String msg = String.format("There are no jokes for '%s'. Try running /joke list", category);
+            String msg = String.format("There are no jokes for '%s'", category);
             event.reply(msg).queue();
             return;
         }
