@@ -3,6 +3,7 @@ package de.tosoxdev.tosoxjr.commands.scramble;
 enum GameState {
     ONGOING("Scramble"),
     WIN("You won!"),
+    DEFEAT("You lose!"),
     TIMEOUT("Timeout");
 
     private final String title;
