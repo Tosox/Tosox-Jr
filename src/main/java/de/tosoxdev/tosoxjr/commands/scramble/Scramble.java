@@ -13,12 +13,22 @@ import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Scramble {
     public static final HashMap<String, String> RANDOM_WORD_APIS = new HashMap<>(Map.of(
-            "en", "https://random-word-api.vercel.app/api?words=1",
-            "de", "https://alex-riedel.de/randV2.php?anz=1"
+            "en", "https://capitalizemytitle.com/wp-content/tools/random-word/en/nouns.txt",
+            "de", "https://capitalizemytitle.com/wp-content/tools/random-word/de/nouns.txt"
     ));
+    private static final HashMap<String, List<String>> RANDOM_WORD_LIST = new HashMap<>();
+
+    static {
+        for (Map.Entry<String, String> entry : RANDOM_WORD_APIS.entrySet()) {
+            String response = APIRequest.getString(entry.getValue());
+            RANDOM_WORD_LIST.put(entry.getKey(), response != null ? List.of(response.split(",")) : null);
+        }
+    }
+
     private static final int TIMEOUT_MS = 2 * 60 * 1000;
     private static final int STOP_SIGN_CP = 0x1F6D1;
 
@@ -129,19 +139,9 @@ public class Scramble {
     }
 
     private String generateWord() {
-        String lang = RANDOM_WORD_APIS.getOrDefault(language.toLowerCase(), RANDOM_WORD_APIS.get("en"));
-        String response = APIRequest.getString(lang);
-        if (response == null) {
-            return null;
-        }
-
-        // Remove brackets and quotation marks
-        response = response.substring(2, response.length() - 2);
-
-        // Replace german umlauts
-        response = response.replace("&auml;", "ä").replace("&ouml;", "ö").replace("&uuml;", "ü").replace("&szlig;", "ß");
-
-        return response;
+        List<String> words = RANDOM_WORD_LIST.getOrDefault(language.toLowerCase(), RANDOM_WORD_LIST.get("en"));
+        int randomIdx = ThreadLocalRandom.current().nextInt(words.size());
+        return words.get(randomIdx);
     }
 
     private EmbedBuilder createGameEmbed(GameState state, String sender) {

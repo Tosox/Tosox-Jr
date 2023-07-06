@@ -15,14 +15,23 @@ import org.json.JSONObject;
 
 import java.awt.*;
 import java.util.*;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 public class Hangman {
     public static final HashMap<String, String> RANDOM_WORD_APIS = new HashMap<>(Map.of(
-            "en", "https://random-word-api.vercel.app/api?words=1",
-            "de", "https://alex-riedel.de/randV2.php?anz=1"
+            "en", "https://capitalizemytitle.com/wp-content/tools/random-word/en/nouns.txt",
+            "de", "https://capitalizemytitle.com/wp-content/tools/random-word/de/nouns.txt"
     ));
+    private static final HashMap<String, List<String>> RANDOM_WORD_LIST = new HashMap<>();
+
+    static {
+        for (Map.Entry<String, String> entry : RANDOM_WORD_APIS.entrySet()) {
+            String response = APIRequest.getString(entry.getValue());
+            RANDOM_WORD_LIST.put(entry.getKey(), response != null ? List.of(response.split(",")) : null);
+        }
+    }
 
     private static final String API_DICTIONARY = "https://www.dictionaryapi.com/api/v3/references/collegiate/json/%s?key=%s";
     private static final int REGIONAL_INDICATOR_A_CP = 0x1F1E6;
@@ -202,14 +211,9 @@ public class Hangman {
     }
 
     private String generateWord() {
-        String lang = RANDOM_WORD_APIS.getOrDefault(language.toLowerCase(), RANDOM_WORD_APIS.get("en"));
-        String response = APIRequest.getString(lang);
-        if (response == null) {
-            return null;
-        }
-
-        // Remove brackets and quotation marks
-        return response.substring(2, response.length() - 2);
+        List<String> words = RANDOM_WORD_LIST.getOrDefault(language.toLowerCase(), RANDOM_WORD_LIST.get("en"));
+        int randomIdx = ThreadLocalRandom.current().nextInt(words.size());
+        return words.get(randomIdx);
     }
 
     private String showWord() {
