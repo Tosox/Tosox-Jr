@@ -18,23 +18,6 @@ import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
-enum GameState {
-    ONGOING("Hangman"),
-    WIN("You won!"),
-    DEFEAT("You lost!"),
-    TIMEOUT("Timeout");
-
-    private final String title;
-
-    GameState(String title) {
-        this.title = title;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-}
-
 public class Hangman {
     public static final HashMap<String, String> RANDOM_WORD_APIS = new HashMap<>(Map.of(
             "en", "https://random-word-api.vercel.app/api?words=1",
@@ -46,7 +29,7 @@ public class Hangman {
     private static final int REGIONAL_INDICATOR_Z_CP = 0x1F1FF;
     private static final int JOKER_CP = 0x1F0CF;
     private static final int STOP_SIGN_CP = 0x1F6D1;
-    private static final int TIMEOUT_MS = 2 * 60 * 1000;
+    private static final int TIMEOUT_MS = 60 * 1000;
 
     private final Set<Character> guessedLetters = new HashSet<>();
     private final MessageChannel channel;
