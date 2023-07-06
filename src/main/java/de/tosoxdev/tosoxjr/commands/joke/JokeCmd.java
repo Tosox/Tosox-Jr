@@ -16,7 +16,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class JokeCmd extends CommandBase {
     private final HashMap<String, Callable<String>> categories = new HashMap<>(Map.of(
-            "general", Joke::getGeneral,
+            "pun", Joke::getPun,
             "programming", Joke::getProgramming,
             "chuck-norris", Joke::getChuckNorris
     ));
@@ -27,8 +27,8 @@ public class JokeCmd extends CommandBase {
                 new OptionData(OptionType.STRING, "category", "List all available categories with 'list'", false)
         ));
 
-        StringBuilder sb = new StringBuilder();
-        categories.forEach((key, value) -> sb.append(String.format("- %s\n", key)));
+        StringBuilder sb = new StringBuilder("Available categories");
+        categories.forEach((key, value) -> sb.append(String.format("\n- %s", key)));
         categoriesList = sb.toString();
     }
 
@@ -52,8 +52,7 @@ public class JokeCmd extends CommandBase {
         }
 
         if (category.equalsIgnoreCase("list")) {
-            String msg = String.format("Available categories\n%s", categoriesList);
-            event.reply(msg).queue();
+            event.reply(categoriesList).queue();
             return;
         }
 

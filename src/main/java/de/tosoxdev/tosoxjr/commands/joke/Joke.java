@@ -7,7 +7,7 @@ import org.json.JSONObject;
 public class Joke {
     private final static String PUN_TEMPLATE = "%s\n... %s";
 
-    public static String getGeneral() {
+    public static String getPun() {
         JSONArray response = (JSONArray) APIRequest.getJson("https://official-joke-api.appspot.com/jokes/general/random");
         if ((response == null) || (response.isEmpty())) {
             return null;
