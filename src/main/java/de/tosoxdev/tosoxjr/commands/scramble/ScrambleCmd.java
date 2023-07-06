@@ -24,8 +24,8 @@ public class ScrambleCmd extends GameBase {
         ));
         instance = this;
 
-        StringBuilder sb = new StringBuilder();
-        Hangman.RANDOM_WORD_APIS.forEach((key, value) -> sb.append(String.format("- %s\n", key)));
+        StringBuilder sb = new StringBuilder("Available languages");
+        Hangman.RANDOM_WORD_APIS.forEach((key, value) -> sb.append(String.format("\n- %s", key)));
         languages = sb.toString();
     }
 
@@ -33,8 +33,7 @@ public class ScrambleCmd extends GameBase {
     public void handle(SlashCommandInteractionEvent event) {
         String lang = ArgumentParser.getString(event.getOption("lang"), "");
         if (lang.equalsIgnoreCase("list")) {
-            String msg = String.format("Available languages\n%s", languages);
-            event.reply(msg).queue();
+            event.reply(languages).queue();
             return;
         }
 

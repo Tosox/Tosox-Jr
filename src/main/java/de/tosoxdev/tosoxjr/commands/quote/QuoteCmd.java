@@ -28,8 +28,8 @@ public class QuoteCmd extends CommandBase {
                 new OptionData(OptionType.STRING, "category", "List all available categories with 'list'", false)
         ));
 
-        StringBuilder sb = new StringBuilder();
-        categories.forEach((key, value) -> sb.append(String.format("- %s\n", key)));
+        StringBuilder sb = new StringBuilder("Available categories");
+        categories.forEach((key, value) -> sb.append(String.format("\n- %s", key)));
         categoriesList = sb.toString();
     }
 
@@ -53,8 +53,7 @@ public class QuoteCmd extends CommandBase {
         }
 
         if (category.equalsIgnoreCase("list")) {
-            String msg = String.format("Available categories\n%s", categoriesList);
-            event.reply(msg).queue();
+            event.reply(categoriesList).queue();
             return;
         }
 
