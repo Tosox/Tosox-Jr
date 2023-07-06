@@ -29,7 +29,7 @@ public class Hangman {
     private static final int REGIONAL_INDICATOR_Z_CP = 0x1F1FF;
     private static final int JOKER_CP = 0x1F0CF;
     private static final int STOP_SIGN_CP = 0x1F6D1;
-    private static final int TIMEOUT_MS = 60 * 1000;
+    private static final int TIMEOUT_MS = 2 * 60 * 1000;
 
     private final Set<Character> guessedLetters = new HashSet<>();
     private final MessageChannel channel;
@@ -258,9 +258,9 @@ public class Hangman {
             gameEmbed.addField(
                     "How To Play",
                     """
-                    React with emojis (e.g. \uD83C\uDDE6, \uD83C\uDDE7) to make a guess
-                    React with the joker (🃏) to get a hint
-                    React with the stop sign (🛑) to end the game
+                    - React with emojis (e.g. \uD83C\uDDE6, \uD83C\uDDE7) to make a guess
+                    - React with the joker (🃏) to get a hint
+                    - React with the stop sign (🛑) to end the game
                     """, false);
         }
         return gameEmbed;
