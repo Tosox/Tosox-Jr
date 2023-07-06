@@ -59,7 +59,7 @@ public class Scramble {
         }
 
         // Shuffle word
-        List<String> chars = new ArrayList<>(word.toUpperCase().chars().mapToObj(c -> String.valueOf((char) c)).toList());
+        List<String> chars = new ArrayList<>(word.chars().mapToObj(c -> String.valueOf((char) c)).toList());
         Collections.shuffle(chars);
         scrambledWord = String.join("", chars);
 
@@ -146,7 +146,7 @@ public class Scramble {
 
     private EmbedBuilder createGameEmbed(GameState state, String sender) {
         EmbedBuilder gameEmbed = new EmbedBuilder();
-        gameEmbed.setTitle(state.getTitle());
+        gameEmbed.setTitle((coop ? "[CO-OP] " : "") + state.getTitle());
         gameEmbed.setColor(Color.CYAN);
         gameEmbed.addField(state == GameState.ONGOING ? "Word" : "The word was", state == GameState.ONGOING ? scrambledWord : word, false);
         if (state == GameState.WIN) {

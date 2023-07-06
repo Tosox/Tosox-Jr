@@ -74,7 +74,6 @@ public class Hangman {
             }
         }, TIMEOUT_MS);
 
-        word = word.toUpperCase();
         channel.sendMessageEmbeds(createGameEmbed(GameState.ONGOING).build()).queue(m -> embedMessageId = m.getId());
         return true;
     }
@@ -213,7 +212,8 @@ public class Hangman {
     private String generateWord() {
         List<String> words = RANDOM_WORD_LIST.getOrDefault(language.toLowerCase(), RANDOM_WORD_LIST.get("en"));
         int randomIdx = ThreadLocalRandom.current().nextInt(words.size());
-        return words.get(randomIdx);
+        String randomWord = words.get(randomIdx);
+        return randomWord != null ? randomWord.toUpperCase().replace("Ä", "AE").replace("Ö", "OE").replace("Ü", "UE") : null;
     }
 
     private String showWord() {
@@ -250,7 +250,7 @@ public class Hangman {
 
     private EmbedBuilder createGameEmbed(GameState state) {
         EmbedBuilder gameEmbed = new EmbedBuilder();
-        gameEmbed.setTitle(state.getTitle());
+        gameEmbed.setTitle((coop ? "[CO-OP] " : "") + state.getTitle());
         gameEmbed.setColor(Color.BLUE);
         gameEmbed.setDescription(createDescription());
         gameEmbed.addField("Word", "```" + (state == GameState.ONGOING ? showWord() : revealWord()) + "```", false);
