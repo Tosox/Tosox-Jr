@@ -2,7 +2,6 @@ package de.tosoxdev.tosoxjr.commands.scramble;
 
 import de.tosoxdev.tosoxjr.commands.GameBase;
 import de.tosoxdev.tosoxjr.commands.hangman.Hangman;
-import de.tosoxdev.tosoxjr.commands.hangman.HangmanCmd;
 import de.tosoxdev.tosoxjr.utils.ArgumentParser;
 import net.dv8tion.jda.api.events.Event;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -15,7 +14,7 @@ import java.util.List;
 public class ScrambleCmd extends GameBase {
     private static final int MAX_GAMES = 10;
     private static ScrambleCmd instance;
-    private final HashMap<String, Scramble> games = new HashMap<String, Scramble>();
+    private final HashMap<String, Scramble> games = new HashMap<>();
     private final String languages;
 
     public ScrambleCmd() {
