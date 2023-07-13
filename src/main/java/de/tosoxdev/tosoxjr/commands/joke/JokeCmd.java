@@ -41,7 +41,7 @@ public class JokeCmd extends CommandBase {
             String randomCategory = (String) categories.keySet().toArray()[randomIdx];
             Callable<String> callable = categories.get(randomCategory);
 
-            String joke = Utils.getStringFromCallable(callable);
+            String joke = Utils.getFromCallable(callable);
             if (joke == null) {
                 Main.getLogger().error("The callable didn't return a value when trying to run 'joke'");
                 return;
@@ -63,7 +63,7 @@ public class JokeCmd extends CommandBase {
             return;
         }
 
-        String joke = Utils.getStringFromCallable(callable);
+        String joke = Utils.getFromCallable(callable);
         if (joke == null) {
             Main.getLogger().error("The callable didn't return a value when trying to run 'joke'");
             return;
