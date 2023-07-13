@@ -150,7 +150,7 @@ public class Scramble {
 
     private EmbedBuilder createGameEmbed(GameState state, String sender) {
         EmbedBuilder gameEmbed = new EmbedBuilder();
-        gameEmbed.setTitle((coop ? "[CO-OP] " : "") + state.getTitle());
+        gameEmbed.setTitle(String.format("%s[%s] %s", coop ? "[CO-OP]" : "", language.isBlank() ? "EN" : language.toUpperCase(), state.getTitle()));
         gameEmbed.setColor(Color.CYAN);
         gameEmbed.addField(state == GameState.ONGOING ? "Word" : "The word was", state == GameState.ONGOING ? scrambledWord : word, false);
         if (state == GameState.WIN) {
