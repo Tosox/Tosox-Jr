@@ -29,7 +29,7 @@ public class Scramble {
         }
     }
 
-    private static final int TIMEOUT_MS = 2 * 60 * 1000;
+    private static final int TIMEOUT_MS = 10 * 60 * 1000;
     private static final int STOP_SIGN_CP = 0x1F6D1;
 
     private final MessageChannel channel;
@@ -169,6 +169,7 @@ public class Scramble {
                     - React with the stop sign (🛑) to end the game
                     """, false);
         }
+        gameEmbed.setFooter("Request made by @" + player, null);
         return gameEmbed;
     }
 }
