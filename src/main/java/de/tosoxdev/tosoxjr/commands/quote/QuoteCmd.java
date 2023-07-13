@@ -42,7 +42,7 @@ public class QuoteCmd extends CommandBase {
             String randomCategory = (String) categories.keySet().toArray()[randomIdx];
             Callable<String> callable = categories.get(randomCategory);
 
-            String quote = Utils.getStringFromCallable(callable);
+            String quote = Utils.getFromCallable(callable);
             if (quote == null) {
                 Main.getLogger().error("The callable didn't return a value when trying to run 'quote'");
                 return;
@@ -64,7 +64,7 @@ public class QuoteCmd extends CommandBase {
             return;
         }
 
-        String quote = Utils.getStringFromCallable(callable);
+        String quote = Utils.getFromCallable(callable);
         if (quote == null) {
             Main.getLogger().error("The callable didn't return a value when trying to run 'quote'");
             return;

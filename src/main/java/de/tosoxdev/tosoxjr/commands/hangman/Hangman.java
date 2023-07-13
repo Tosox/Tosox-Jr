@@ -250,7 +250,7 @@ public class Hangman {
 
     private EmbedBuilder createGameEmbed(GameState state) {
         EmbedBuilder gameEmbed = new EmbedBuilder();
-        gameEmbed.setTitle((coop ? "[CO-OP] " : "") + state.getTitle());
+        gameEmbed.setTitle(String.format("%s[%s] %s", coop ? "[CO-OP]" : "", language.isBlank() ? "EN" : language.toUpperCase(), state.getTitle()));
         gameEmbed.setColor(Color.BLUE);
         gameEmbed.setDescription(createDescription());
         gameEmbed.addField("Word", "```" + (state == GameState.ONGOING ? showWord() : revealWord()) + "```", false);
@@ -267,6 +267,7 @@ public class Hangman {
                     - React with the stop sign (🛑) to end the game
                     """, false);
         }
+        gameEmbed.setFooter("Request made by @" + player, null);
         return gameEmbed;
     }
 }

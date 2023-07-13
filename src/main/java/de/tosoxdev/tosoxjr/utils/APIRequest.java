@@ -2,7 +2,6 @@ package de.tosoxdev.tosoxjr.utils;
 
 import de.tosoxdev.tosoxjr.Main;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -49,15 +48,14 @@ public class APIRequest {
             return null;
         }
 
-        try {
+        char fistChar = body.charAt(0);
+        if (fistChar == '{') {
             return new JSONObject(body);
-        } catch (JSONException e) {
-            try {
-                return new JSONArray(body);
-            } catch (JSONException f) {
-                Main.getLogger().error("The json body for request '{}' is malformed", query);
-                return null;
-            }
+        } else if (fistChar == '[')
+            return new JSONArray(body);
+        else {
+            Main.getLogger().error("The json body for request '{}' is malformed", query);
+            return null;
         }
     }
 }

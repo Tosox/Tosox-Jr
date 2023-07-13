@@ -29,7 +29,7 @@ public class Scramble {
         }
     }
 
-    private static final int TIMEOUT_MS = 2 * 60 * 1000;
+    private static final int TIMEOUT_MS = 10 * 60 * 1000;
     private static final int STOP_SIGN_CP = 0x1F6D1;
 
     private final MessageChannel channel;
@@ -40,7 +40,6 @@ public class Scramble {
     private Timer tmTimeout = new Timer();
     private String embedMessageId;
     private long timer;
-    private int attempts;
     private String word;
     private String scrambledWord;
 
@@ -58,8 +57,15 @@ public class Scramble {
             return false;
         }
 
+        // Bugfix for the words with spaces ("Ansicht")
+        word = word.replaceAll("\\s+","");
+
         // Shuffle word
-        List<String> chars = new ArrayList<>(word.chars().mapToObj(c -> String.valueOf((char) c)).toList());
+        List<String> chars = new ArrayList<>(word
+                .toLowerCase()
+                .chars()
+                .mapToObj(c -> String.valueOf((char) c))
+                .toList());
         Collections.shuffle(chars);
         scrambledWord = String.join("", chars);
 
@@ -113,8 +119,6 @@ public class Scramble {
         // Reset timeout timer
         resetTimer();
 
-        attempts++;
-
         if (event.getMessage().getContentDisplay().equalsIgnoreCase(word)) {
             endGame(GameState.WIN, sender.getName());
         }
@@ -146,14 +150,14 @@ public class Scramble {
 
     private EmbedBuilder createGameEmbed(GameState state, String sender) {
         EmbedBuilder gameEmbed = new EmbedBuilder();
-        gameEmbed.setTitle((coop ? "[CO-OP] " : "") + state.getTitle());
+        gameEmbed.setTitle(String.format("%s[%s] %s", coop ? "[CO-OP]" : "", language.isBlank() ? "EN" : language.toUpperCase(), state.getTitle()));
         gameEmbed.setColor(Color.CYAN);
         gameEmbed.addField(state == GameState.ONGOING ? "Word" : "The word was", state == GameState.ONGOING ? scrambledWord : word, false);
         if (state == GameState.WIN) {
             double time = (double)(System.currentTimeMillis() - timer) / 1000;
             String results = coop
                     ? String.format("%s guessed the word first after %.2fs", sender, time)
-                    : String.format("You guessed the word after %.2fs and %d attempts", time, attempts);
+                    : String.format("You guessed the word after %.2fs", time);
             gameEmbed.addField("Results", results, false);
         }
         if (state == GameState.ONGOING) {
@@ -165,6 +169,7 @@ public class Scramble {
                     - React with the stop sign (🛑) to end the game
                     """, false);
         }
+        gameEmbed.setFooter("Request made by @" + player, null);
         return gameEmbed;
     }
 }
