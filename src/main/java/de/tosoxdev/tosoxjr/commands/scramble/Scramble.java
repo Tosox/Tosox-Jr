@@ -40,7 +40,6 @@ public class Scramble {
     private Timer tmTimeout = new Timer();
     private String embedMessageId;
     private long timer;
-    private int attempts;
     private String word;
     private String scrambledWord;
 
@@ -113,8 +112,6 @@ public class Scramble {
         // Reset timeout timer
         resetTimer();
 
-        attempts++;
-
         if (event.getMessage().getContentDisplay().equalsIgnoreCase(word)) {
             endGame(GameState.WIN, sender.getName());
         }
@@ -153,7 +150,7 @@ public class Scramble {
             double time = (double)(System.currentTimeMillis() - timer) / 1000;
             String results = coop
                     ? String.format("%s guessed the word first after %.2fs", sender, time)
-                    : String.format("You guessed the word after %.2fs and %d attempts", time, attempts);
+                    : String.format("You guessed the word after %.2fs", time);
             gameEmbed.addField("Results", results, false);
         }
         if (state == GameState.ONGOING) {
