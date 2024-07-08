@@ -31,4 +31,4 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ghcr.io/tosoxdev/tosox-jr:${{ github.ref_name }}, ghcr.io/tosoxdev/tosox-jr:latest
+          tags: ghcr.io/tosox/tosox-jr:${{ github.ref_name }}, ghcr.io/tosox/tosox-jr:latest
