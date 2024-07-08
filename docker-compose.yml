@@ -2,5 +2,5 @@ version: '3'
 
 services:
   bot:
-    image: ghcr.io/tosoxdev/tosox-jr:latest
+    image: ghcr.io/tosox/tosox-jr:latest
     env_file: stack.env
