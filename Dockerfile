@@ -1,5 +1,5 @@
-# Use Java alpine image
-FROM openjdk:17-alpine
+# Use Java slim image
+FROM openjdk:17-slim
 
 # Set workdir
 WORKDIR /app
