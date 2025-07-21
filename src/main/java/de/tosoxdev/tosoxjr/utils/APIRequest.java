@@ -1,8 +1,9 @@
 package de.tosoxdev.tosoxjr.utils;
 
-import de.tosoxdev.tosoxjr.Main;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URI;
@@ -11,6 +12,8 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 public class APIRequest {
+    private static final Logger LOGGER = LoggerFactory.getLogger(APIRequest.class);
+
     private static HttpResponse<String> get(String query) {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(query))
@@ -21,7 +24,7 @@ public class APIRequest {
         try {
             response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
         } catch (IOException | InterruptedException e) {
-            Main.getLogger().error("The response for request '{}' was invalid", query);
+            LOGGER.error("The response for request '{}' was invalid", query);
             return null;
         }
 
@@ -54,7 +57,7 @@ public class APIRequest {
         } else if (fistChar == '[')
             return new JSONArray(body);
         else {
-            Main.getLogger().error("The json body for request '{}' is malformed", query);
+            LOGGER.error("The json body for request '{}' is malformed", query);
             return null;
         }
     }

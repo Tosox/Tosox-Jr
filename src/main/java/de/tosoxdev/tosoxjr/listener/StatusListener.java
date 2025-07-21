@@ -8,14 +8,18 @@ import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class StatusListener extends ListenerAdapter {
+    private static final Logger LOGGER = LoggerFactory.getLogger(StatusListener.class);
+
     @Override
     public void onReady(@NotNull ReadyEvent event) {
-        Main.getLogger().info("{} is ready", Constants.BOT_NAME);
+        LOGGER.info("{} is ready", Constants.BOT_NAME);
 
         // Global application commands
         List<CommandData> commandData = Main.getCommandManager().getCommands()

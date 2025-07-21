@@ -1,12 +1,13 @@
 package de.tosoxdev.tosoxjr.commands.quote;
 
-import de.tosoxdev.tosoxjr.Main;
 import de.tosoxdev.tosoxjr.commands.CommandBase;
 import de.tosoxdev.tosoxjr.utils.ArgumentParser;
 import de.tosoxdev.tosoxjr.utils.Utils;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.List;
@@ -15,6 +16,8 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class QuoteCmd extends CommandBase {
+    private static final Logger LOGGER = LoggerFactory.getLogger(QuoteCmd.class);
+
     private final HashMap<String, Callable<String>> categories = new HashMap<>(Map.of(
             "breaking-bad", Quote::getBreakingBad,
             "famous", Quote::getFamous,
@@ -44,7 +47,7 @@ public class QuoteCmd extends CommandBase {
 
             String quote = Utils.getFromCallable(callable);
             if (quote == null) {
-                Main.getLogger().error("The callable didn't return a value when trying to run 'quote'");
+                LOGGER.error("The callable didn't return a value when trying to run 'quote'");
                 return;
             }
 
@@ -66,7 +69,7 @@ public class QuoteCmd extends CommandBase {
 
         String quote = Utils.getFromCallable(callable);
         if (quote == null) {
-            Main.getLogger().error("The callable didn't return a value when trying to run 'quote'");
+            LOGGER.error("The callable didn't return a value when trying to run 'quote'");
             return;
         }
 
