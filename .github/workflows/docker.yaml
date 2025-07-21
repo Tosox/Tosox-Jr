@@ -5,7 +5,6 @@ on:
     types: [ 'published' ]
 
 env:
-  TARGET_PLATFORM: linux/amd64,linux/arm64
   REGISTRY: ghcr.io
 
 jobs:
@@ -62,4 +61,3 @@ jobs:
           context: .
           push: true
           tags: ${{ steps.meta.outputs.tags }}
-          platforms: ${{ env.TARGET_PLATFORM }}
