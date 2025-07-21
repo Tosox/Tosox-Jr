@@ -92,7 +92,7 @@ public class CSStatsCmd extends CommandBase {
 
         // Build embed
         EmbedBuilder statsEmbed = new EmbedBuilder();
-        statsEmbed.setTitle(String.format("**CS:GO Stats for %s**", user), null);
+        statsEmbed.setTitle(String.format("**CS2 Stats for %s**", user), null);
         statsEmbed.setColor(Color.ORANGE);
         statsEmbed.setThumbnail(countryCode != null ? flagUrl : null);
         statsEmbed.setAuthor(username, profileUrl, avatarUrl);

@@ -1,52 +1,48 @@
 package de.tosox.tosoxjr.utils;
 
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 
 public class APIRequest {
     private static final Logger LOGGER = LoggerFactory.getLogger(APIRequest.class);
 
-    private static HttpResponse<String> get(String query) {
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(query))
-                .method("GET", HttpRequest.BodyPublishers.noBody())
+    private static final OkHttpClient CLIENT = new OkHttpClient();
+
+    private static String get(String query) {
+        Request request = new Request.Builder()
+                .url(query)
+                .get()
+                .header("User-Agent", "Mozilla/5.0 (X11; Linux i686; rv:57.0) Gecko/20100101 Firefox/57.0")
                 .build();
 
-        HttpResponse<String> response;
-        try {
-            response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
-        } catch (IOException | InterruptedException e) {
+        try (Response response = CLIENT.newCall(request).execute()) {
+            ResponseBody body = response.body();
+            if (body == null) {
+                LOGGER.error("Response body for request '{}' is null", query);
+                return null;
+            }
+
+            return body.string();
+        } catch (IOException e) {
             LOGGER.error("The response for request '{}' was invalid", query);
             return null;
         }
-
-        return response;
     }
 
     public static String getString(String query) {
-        HttpResponse<String> response = get(query);
-        if (response == null) {
-            return null;
-        }
-
-        return response.body();
+        return get(query);
     }
 
     public static Object getJson(String query) {
-        HttpResponse<String> response = get(query);
-        if (response == null) {
-            return null;
-        }
-
-        String body = response.body();
+        String body = getString(query);
         if (body == null) {
             return null;
         }
