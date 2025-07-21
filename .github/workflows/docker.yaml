@@ -1,0 +1,65 @@
+name: Docker CI
+
+on:
+  release:
+    types: [ 'published' ]
+
+env:
+  TARGET_PLATFORM: linux/amd64,linux/arm64
+  REGISTRY: ghcr.io
+
+jobs:
+  maven-build:
+    uses: ./.github/workflows/maven.yaml
+
+  docker-build-publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      attestations: write
+      id-token: write
+    needs:
+      - maven-build
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set lowercase repository name
+        run: echo "REPO_LC=${GITHUB_REPOSITORY@L}" >> $GITHUB_ENV
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.REPO_LC }}
+          tags: |
+            type=semver,pattern={{raw}}
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Download Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: build-artifacts
+          path: target/
+
+      - name: Build and push Docker image
+        id: push
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          platforms: ${{ env.TARGET_PLATFORM }}

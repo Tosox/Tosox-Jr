@@ -1,12 +1,13 @@
 package de.tosoxdev.tosoxjr.commands.joke;
 
-import de.tosoxdev.tosoxjr.Main;
 import de.tosoxdev.tosoxjr.commands.CommandBase;
 import de.tosoxdev.tosoxjr.utils.ArgumentParser;
 import de.tosoxdev.tosoxjr.utils.Utils;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.List;
@@ -15,6 +16,8 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class JokeCmd extends CommandBase {
+    private static final Logger LOGGER = LoggerFactory.getLogger(JokeCmd.class);
+
     private final HashMap<String, Callable<String>> categories = new HashMap<>(Map.of(
             "pun", Joke::getPun,
             "programming", Joke::getProgramming,
@@ -43,7 +46,7 @@ public class JokeCmd extends CommandBase {
 
             String joke = Utils.getFromCallable(callable);
             if (joke == null) {
-                Main.getLogger().error("The callable didn't return a value when trying to run 'joke'");
+                LOGGER.error("The callable didn't return a value when trying to run 'joke'");
                 return;
             }
 
@@ -65,7 +68,7 @@ public class JokeCmd extends CommandBase {
 
         String joke = Utils.getFromCallable(callable);
         if (joke == null) {
-            Main.getLogger().error("The callable didn't return a value when trying to run 'joke'");
+            LOGGER.error("The callable didn't return a value when trying to run 'joke'");
             return;
         }
 

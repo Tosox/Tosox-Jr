@@ -1,12 +1,15 @@
 package de.tosoxdev.tosoxjr.commands.csstats;
 
-import de.tosoxdev.tosoxjr.Main;
 import de.tosoxdev.tosoxjr.utils.APIRequest;
 import de.tosoxdev.tosoxjr.utils.Constants;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class CSStats {
+    private static final Logger LOGGER = LoggerFactory.getLogger(CSStats.class);
+
     private static final String API_VANITY_URL = "http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/?key=%s&vanityurl=%s";
     private static final String API_GAME_STATS = "http://api.steampowered.com/ISteamUserStats/GetUserStatsForGame/v2/?appid=%s&key=%s&steamid=%s";
     private static final String API_USER_PROFILE = "http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=%s&steamids=%s";
@@ -35,7 +38,7 @@ public class CSStats {
         JSONObject objResponse = response.getJSONObject("response");
         int success = objResponse.getInt("success");
         if (success != 1) {
-            Main.getLogger().error("'success' was not '1' when trying to get statistics for {}", userid);
+            LOGGER.error("'success' was not '1' when trying to get statistics for {}", userid);
             return null;
         }
 
