@@ -2,6 +2,7 @@ package de.tosox.tosoxjr.commands.quote;
 
 import de.tosox.tosoxjr.utils.APIRequest;
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class Quote {
     private final static String QUOTE_TEMPLATE = "_%s_\n~ %s";
@@ -18,24 +19,13 @@ public class Quote {
     }
 
     public static String getFamous() {
-        JSONArray response = (JSONArray) APIRequest.getJson("https://api.quotable.io/quotes/random?tags=famous-quotes");
-        if ((response == null) || (response.isEmpty())) {
+        JSONObject response = (JSONObject) APIRequest.getJson("https://quoterism.com/api/quotes/random");
+        if (response == null) {
             return null;
         }
 
-        String content = response.getJSONObject(0).getString("content");
-        String author = response.getJSONObject(0).getString("author");
-        return String.format(QUOTE_TEMPLATE, content, author);
-    }
-
-    public static String getWisdom() {
-        JSONArray response = (JSONArray) APIRequest.getJson("https://api.quotable.io/quotes/random?tags=wisdom");
-        if ((response == null) || (response.isEmpty())) {
-            return null;
-        }
-
-        String content = response.getJSONObject(0).getString("content");
-        String author = response.getJSONObject(0).getString("author");
+        String content = response.getString("text");
+        String author = ((JSONObject) response.get("author")).getString("name");
         return String.format(QUOTE_TEMPLATE, content, author);
     }
 

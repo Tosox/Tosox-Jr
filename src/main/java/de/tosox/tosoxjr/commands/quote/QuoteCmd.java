@@ -21,7 +21,6 @@ public class QuoteCmd extends CommandBase {
     private final HashMap<String, Callable<String>> categories = new HashMap<>(Map.of(
             "breaking-bad", Quote::getBreakingBad,
             "famous", Quote::getFamous,
-            "wisdom", Quote::getWisdom,
             "inspirational", Quote::getInspirational
     ));
     private final String categoriesList;
