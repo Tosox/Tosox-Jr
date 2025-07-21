@@ -1,5 +1,11 @@
+# Use Java alpine image
 FROM openjdk:17-alpine
-LABEL authors="leonbcode"
-COPY target/tosox-jr.jar /usr/app/
-WORKDIR /usr/app
-ENTRYPOINT ["java", "-jar", "tosox-jr.jar"]
+
+# Set workdir
+WORKDIR /app
+
+# Copy the java file
+COPY target/tosox-jr.jar .
+
+# Set default command to run the bot
+CMD ["java", "-jar", "tosox-jr.jar"]

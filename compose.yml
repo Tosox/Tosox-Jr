@@ -1,6 +1,6 @@
-version: '3'
-
 services:
-  bot:
+  tosox-jr:
+    container_name: tosox-jr
     image: ghcr.io/tosox/tosox-jr:latest
+    restart: always
     env_file: stack.env
