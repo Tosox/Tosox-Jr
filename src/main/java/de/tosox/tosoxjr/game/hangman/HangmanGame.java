@@ -20,6 +20,10 @@ public class HangmanGame extends GameBase {
 	private static final int MAX_ATTEMPTS = 7;
 	private static final long TIMEOUT_MS = 2 * 60 * 1000;
 
+	private static final int CODEPOINT_A    = 0x1F1E6;
+	private static final int CODEPOINT_HINT = 0x1F0CF;
+	private static final int CODEPOINT_STOP = 0x1F6D1;
+
 	private final GameManager gameManager;
 	private final HangmanService hangmanService;
 	private final User owner;
@@ -56,7 +60,7 @@ public class HangmanGame extends GameBase {
 
 		channel.sendMessageEmbeds(createGameEmbed(HangmanStatus.ONGOING)).queue(message -> {
 			gameMessage = message;
-			startTimeoutTimer();
+			addReactions(this::startTimeoutTimer);
 		});
 		return true;
 	}
@@ -74,8 +78,8 @@ public class HangmanGame extends GameBase {
 
 		int codePoint = event.getEmoji().getName().codePointAt(0);
 		switch (codePoint) {
-			case 0x1F6D1 -> { if (user.getIdLong() == owner.getIdLong()) endGame(HangmanStatus.DEFEAT); }
-			case 0x1F0CF -> handleHintRequest(user);
+			case CODEPOINT_STOP -> { if (user.getIdLong() == owner.getIdLong()) endGame(HangmanStatus.DEFEAT); }
+			case CODEPOINT_HINT -> handleHintRequest(user);
 			default -> handleLetterGuess(codePoint);
 		}
 	}
@@ -89,9 +93,9 @@ public class HangmanGame extends GameBase {
 	}
 
 	private void handleLetterGuess(int codePoint) {
-		if (codePoint < 0x1F1E6 || codePoint > 0x1F1FF) return;
+		if (codePoint < CODEPOINT_A || codePoint > CODEPOINT_A + 25) return;
 
-		char letter = (char) ('A' + (codePoint - 0x1F1E6));
+		char letter = (char) ('A' + (codePoint - CODEPOINT_A));
 		if (guessedLetters.contains(letter)) return;
 
 		guessedLetters.add(letter);
@@ -110,7 +114,9 @@ public class HangmanGame extends GameBase {
 		}
 
 		gameMessage.clearReactions().queue(v ->
-				gameMessage.editMessageEmbeds(createGameEmbed(HangmanStatus.ONGOING)).queue()
+				gameMessage.editMessageEmbeds(createGameEmbed(HangmanStatus.ONGOING)).queue(v2 ->
+						addReactions(null)
+				)
 		);
 	}
 
@@ -121,9 +127,24 @@ public class HangmanGame extends GameBase {
 		hangmanService.getDefinition(word).ifPresent(def -> {
 			wordDefinition = def;
 			gameMessage.clearReactions().queue(v ->
-					gameMessage.editMessageEmbeds(createGameEmbed(HangmanStatus.ONGOING)).queue()
+					gameMessage.editMessageEmbeds(createGameEmbed(HangmanStatus.ONGOING)).queue(v2 ->
+							addReactions(null)
+					)
 			);
 		});
+	}
+
+	private void addReactions(Runnable onDone) {
+		Emoji stop = Emoji.fromUnicode(new String(Character.toChars(CODEPOINT_STOP)));
+		Runnable addStop = () -> gameMessage.addReaction(stop).queue(
+				onDone != null ? v -> onDone.run() : null
+		);
+		if (wordDefinition == null) {
+			Emoji hint = Emoji.fromUnicode(new String(Character.toChars(CODEPOINT_HINT)));
+			gameMessage.addReaction(hint).queue(v -> addStop.run());
+		} else {
+			addStop.run();
+		}
 	}
 
 	private String buildFigure() {
@@ -180,8 +201,8 @@ public class HangmanGame extends GameBase {
 				embed.addField("Hint", wordDefinition, false);
 			}
 			embed.addField("How To Play", """
-					- React with 🇦-🇿 to guess a letter
-					- React with 🃏 to reveal a hint (owner only)
+					- React with 🇦 - 🇿 to guess a letter
+					- React with 🃏 to reveal a hint
 					- React with 🛑 to end the game
 					""", false);
 		}
