@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.TreeMap;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Supplier;
 
@@ -27,11 +28,11 @@ public class JokeCommand extends CommandBase {
                 new OptionData(OptionType.STRING, "category", "List all available categories with 'list'", false)
         ));
 
-	    this.categories = Map.of(
+	    this.categories = new TreeMap<>(Map.of(
                 "pun", jokeService::getPun,
                 "programming", jokeService::getProgramming,
                 "chuck-norris", jokeService::getChuckNorris
-        );
+        ));
 
         StringBuilder sb = new StringBuilder("Available categories");
         categories.keySet().forEach(category -> sb.append("\n- ").append(category));
