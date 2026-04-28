@@ -1,4 +1,4 @@
-name: Java CI with Maven
+name: Build with Maven
 
 on:
   push:
@@ -9,9 +9,13 @@ on:
 
 jobs:
   build:
+    permissions:
+      contents: write
+
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout repository
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
       - name: Set up JDK 17
@@ -30,3 +34,8 @@ jobs:
           name: build-artifacts
           path: target/tosox-jr.jar
           retention-days: 1
+
+      - name: Update dependency graph
+        uses: advanced-security/maven-dependency-submission-action@v3
+        with:
+          ignore-maven-wrapper: true
