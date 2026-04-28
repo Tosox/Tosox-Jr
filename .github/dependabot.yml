@@ -1,0 +1,17 @@
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    labels:
+      - dependencies
+    directory: /
+    target-branch: dev
+    schedule:
+      interval: monthly
+
+  - package-ecosystem: maven
+    labels:
+      - dependencies
+    directory: /
+    target-branch: dev
+    schedule:
+      interval: monthly
