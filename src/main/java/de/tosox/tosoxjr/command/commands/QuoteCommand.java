@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.TreeMap;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Supplier;
 
@@ -27,11 +28,11 @@ public class QuoteCommand extends CommandBase {
                 new OptionData(OptionType.STRING, "category", "List all available categories with 'list'", false)
         ));
 
-        this.categories = Map.of(
+        this.categories = new TreeMap<>(Map.of(
                 "breaking-bad", quoteService::getBreakingBad,
-                "famous", quoteService::getFamous,
+                "motivational", quoteService::getMotivational,
                 "inspirational", quoteService::getInspirational
-        );
+        ));
 
         StringBuilder sb = new StringBuilder("Available categories");
         categories.keySet().forEach(category -> sb.append("\n- ").append(category));
@@ -65,7 +66,8 @@ public class QuoteCommand extends CommandBase {
                 quote -> event.reply(quote).queue(),
                 () -> {
                     LOGGER.error("No quote found for category '{}'", category);
-                    event.reply("😅 Sorry, I couldn’t fetch a quote from `" + category + "` right now.").queue();
+                    event.reply("😅 Sorry, I couldn’t fetch a quote from `" + category + "` right now.")
+                            .setEphemeral(true).queue();
                 }
         );
     }
